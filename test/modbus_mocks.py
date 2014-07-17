@@ -1,9 +1,13 @@
-from pymodbus.interfaces import IModbusSlaveContext
+from pymodbus3.interfaces import IModbusSlaveContext
 
 #---------------------------------------------------------------------------#
 # Mocks
 #---------------------------------------------------------------------------#
-class mock(object): pass
+
+
+class mock(object):
+    pass
+
 
 class MockContext(IModbusSlaveContext):
 
@@ -14,14 +18,15 @@ class MockContext(IModbusSlaveContext):
     def validate(self, fx, address, count):
         return self.valid
 
-    def getValues(self, fx, address, count):
+    def get_values(self, fx, address, count):
         return [self.default] * count
 
-    def setValues(self, fx, address, count):
+    def set_values(self, fx, address, count):
         pass
 
+
 class FakeList(object):
-    ''' todo, replace with magic mock '''
+    """ todo, replace with magic mock """
 
     def __init__(self, size):
         self.size = size
@@ -31,4 +36,3 @@ class FakeList(object):
 
     def __iter__(self):
         return []
-

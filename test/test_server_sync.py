@@ -1,26 +1,25 @@
-#!/usr/bin/env python
 import unittest
 from mock import patch, Mock
 import SocketServer
 import serial
 import socket
-
-from pymodbus.device import ModbusDeviceIdentification
-from pymodbus.server.sync import ModbusBaseRequestHandler
-from pymodbus.server.sync import ModbusSingleRequestHandler
-from pymodbus.server.sync import ModbusConnectedRequestHandler
-from pymodbus.server.sync import ModbusDisconnectedRequestHandler
-from pymodbus.server.sync import ModbusTcpServer, ModbusUdpServer, ModbusSerialServer
-from pymodbus.server.sync import StartTcpServer, StartUdpServer, StartSerialServer
-from pymodbus.exceptions import NotImplementedException
-from pymodbus.bit_read_message import ReadCoilsRequest, ReadCoilsResponse
+from pymodbus3.device import ModbusDeviceIdentification
+from pymodbus3.server.sync import ModbusBaseRequestHandler
+from pymodbus3.server.sync import ModbusSingleRequestHandler
+from pymodbus3.server.sync import ModbusConnectedRequestHandler
+from pymodbus3.server.sync import ModbusDisconnectedRequestHandler
+from pymodbus3.server.sync import ModbusTcpServer, ModbusUdpServer, ModbusSerialServer
+from pymodbus3.server.sync import StartTcpServer, StartUdpServer, StartSerialServer
+from pymodbus3.bit_read_message import ReadCoilsRequest, ReadCoilsResponse
 
 #---------------------------------------------------------------------------#
 # Mock Classes
 #---------------------------------------------------------------------------#
+
+
 class MockServer(object):
     def __init__(self):
-        self.framer  = lambda _: "framer"
+        self.framer = lambda _: "framer"
         self.decoder = "decoder"
         self.threads = []
         self.context = {}
@@ -28,28 +27,29 @@ class MockServer(object):
 #---------------------------------------------------------------------------#
 # Fixture
 #---------------------------------------------------------------------------#
+
+
 class SynchronousServerTest(unittest.TestCase):
-    '''
-    This is the unittest for the pymodbus.server.sync module
-    '''
+    """
+    This is the unittest for the pymodbus3.server.sync module
+    """
 
     #-----------------------------------------------------------------------#
     # Test Base Request Handler
     #-----------------------------------------------------------------------#
 
-    def testBaseHandlerUndefinedMethods(self):
-        ''' Test the base handler undefined methods'''
+    def test_base_handler_undefined_methods(self):
+        """ Test the base handler undefined methods"""
         handler = SocketServer.BaseRequestHandler(None, None, None)
         handler.__class__ = ModbusBaseRequestHandler
-        self.assertRaises(NotImplementedException, lambda: handler.send(None))
-        self.assertRaises(NotImplementedException, lambda: handler.handle())
+        self.assertRaises(NotImplementedError, lambda: handler.send(None))
+        self.assertRaises(NotImplementedError, lambda: handler.handle())
 
-    def testBaseHandlerMethods(self):
-        ''' Test the base class for all the clients '''
+    def test_base_handler_methods(self):
+        """ Test the base class for all the clients """
         request = ReadCoilsRequest(1, 1)
         address = ('server', 12345)
-        server  = MockServer()
-        
+        server = MockServer()
         with patch.object(ModbusBaseRequestHandler, 'handle') as mock_handle:
             with patch.object(ModbusBaseRequestHandler, 'send') as mock_send:
                 mock_handle.return_value = True
@@ -68,10 +68,10 @@ class SynchronousServerTest(unittest.TestCase):
     #-----------------------------------------------------------------------#
     # Test Single Request Handler
     #-----------------------------------------------------------------------#
-    def testModbusSingleRequestHandlerSend(self):
+    def test_modbus_single_request_handler_send(self):
         handler = SocketServer.BaseRequestHandler(None, None, None)
         handler.__class__ = ModbusSingleRequestHandler
-        handler.framer  = Mock()
+        handler.framer = Mock()
         handler.framer.buildPacket.return_value = "message"
         handler.request = Mock()
         request = ReadCoilsResponse([1])
@@ -82,14 +82,13 @@ class SynchronousServerTest(unittest.TestCase):
         handler.send(request)
         self.assertEqual(handler.request.send.call_count, 1)
 
-    def testModbusSingleRequestHandlerHandle(self):
+    def test_modbus_single_request_handler_handle(self):
         handler = SocketServer.BaseRequestHandler(None, None, None)
         handler.__class__ = ModbusSingleRequestHandler
-        handler.framer  = Mock()
+        handler.framer = Mock()
         handler.framer.buildPacket.return_value = "message"
         handler.request = Mock()
         handler.request.recv.return_value = "\x12\x34"
-
         # exit if we are not running
         handler.running = False
         handler.handle()
@@ -97,7 +96,7 @@ class SynchronousServerTest(unittest.TestCase):
 
         # run forever if we are running
         def _callback1(a, b):
-            handler.running = False # stop infinite loop
+            handler.running = False  # stop infinite loop
         handler.framer.processIncomingPacket.side_effect = _callback1
         handler.running = True
         handler.handle()
@@ -107,7 +106,8 @@ class SynchronousServerTest(unittest.TestCase):
         def _callback2(a, b):
             if handler.framer.processIncomingPacket.call_count == 2:
                 raise Exception("example exception")
-            else: handler.running = False # stop infinite loop
+            else:
+                handler.running = False  # stop infinite loop
         handler.framer.processIncomingPacket.side_effect = _callback2
         handler.running = True
         handler.handle()
@@ -116,10 +116,10 @@ class SynchronousServerTest(unittest.TestCase):
     #-----------------------------------------------------------------------#
     # Test Connected Request Handler
     #-----------------------------------------------------------------------#
-    def testModbusConnectedRequestHandlerSend(self):
+    def test_modbus_connected_request_handler_send(self):
         handler = SocketServer.BaseRequestHandler(None, None, None)
         handler.__class__ = ModbusConnectedRequestHandler
-        handler.framer  = Mock()
+        handler.framer = Mock()
         handler.framer.buildPacket.return_value = "message"
         handler.request = Mock()
         request = ReadCoilsResponse([1])
@@ -130,10 +130,10 @@ class SynchronousServerTest(unittest.TestCase):
         handler.send(request)
         self.assertEqual(handler.request.send.call_count, 1)
 
-    def testModbusConnectedRequestHandlerHandle(self):
+    def test_modbus_connected_request_handler_handle(self):
         handler = SocketServer.BaseRequestHandler(None, None, None)
         handler.__class__ = ModbusConnectedRequestHandler
-        handler.framer  = Mock()
+        handler.framer = Mock()
         handler.framer.buildPacket.return_value = "message"
         handler.request = Mock()
         handler.request.recv.return_value = "\x12\x34"
@@ -145,7 +145,7 @@ class SynchronousServerTest(unittest.TestCase):
 
         # run forever if we are running
         def _callback(a, b):
-            handler.running = False # stop infinite loop
+            handler.running = False  # stop infinite loop
         handler.framer.processIncomingPacket.side_effect = _callback
         handler.running = True
         handler.handle()
@@ -172,10 +172,10 @@ class SynchronousServerTest(unittest.TestCase):
     #-----------------------------------------------------------------------#
     # Test Disconnected Request Handler
     #-----------------------------------------------------------------------#
-    def testModbusDisconnectedRequestHandlerSend(self):
+    def test_modbus_disconnected_request_handler_send(self):
         handler = SocketServer.BaseRequestHandler(None, None, None)
         handler.__class__ = ModbusDisconnectedRequestHandler
-        handler.framer  = Mock()
+        handler.framer = Mock()
         handler.framer.buildPacket.return_value = "message"
         handler.request = Mock()
         request = ReadCoilsResponse([1])
@@ -186,10 +186,10 @@ class SynchronousServerTest(unittest.TestCase):
         handler.send(request)
         self.assertEqual(handler.request.sendto.call_count, 1)
 
-    def testModbusDisconnectedRequestHandlerHandle(self):
+    def test_modbus_disconnected_request_handler_handle(self):
         handler = SocketServer.BaseRequestHandler(None, None, None)
         handler.__class__ = ModbusDisconnectedRequestHandler
-        handler.framer  = Mock()
+        handler.framer = Mock()
         handler.framer.buildPacket.return_value = "message"
         handler.request = ("\x12\x34", handler.request)
 
@@ -200,7 +200,7 @@ class SynchronousServerTest(unittest.TestCase):
 
         # run forever if we are running
         def _callback(a, b):
-            handler.running = False # stop infinite loop
+            handler.running = False  # stop infinite loop
         handler.framer.processIncomingPacket.side_effect = _callback
         handler.running = True
         handler.handle()
@@ -229,8 +229,8 @@ class SynchronousServerTest(unittest.TestCase):
     #-----------------------------------------------------------------------#
     # Test TCP Server
     #-----------------------------------------------------------------------#
-    def testTcpServerClose(self):
-        ''' test that the synchronous TCP server closes correctly '''
+    def test_tcp_server_close(self):
+        """ test that the synchronous TCP server closes correctly """
         with patch.object(socket.socket, 'bind') as mock_socket:
             identity = ModbusDeviceIdentification(info={0x00: 'VendorName'})
             server = ModbusTcpServer(context=None, identity=identity)
@@ -239,8 +239,8 @@ class SynchronousServerTest(unittest.TestCase):
             self.assertEqual(server.control.Identity.VendorName, 'VendorName')
             self.assertFalse(server.threads[0].running)
 
-    def testTcpServerProcess(self):
-        ''' test that the synchronous TCP server processes requests '''
+    def test_tcp_server_process(self):
+        """ test that the synchronous TCP server processes requests """
         with patch('SocketServer.ThreadingTCPServer') as mock_server:
             server = ModbusTcpServer(None)
             server.process_request('request', 'client')
@@ -249,8 +249,8 @@ class SynchronousServerTest(unittest.TestCase):
     #-----------------------------------------------------------------------#
     # Test UDP Server
     #-----------------------------------------------------------------------#
-    def testUdpServerClose(self):
-        ''' test that the synchronous UDP server closes correctly '''
+    def test_udp_server_close(self):
+        """ test that the synchronous UDP server closes correctly """
         with patch.object(socket.socket, 'bind') as mock_socket:
             identity = ModbusDeviceIdentification(info={0x00: 'VendorName'})
             server = ModbusUdpServer(context=None, identity=identity)
@@ -259,8 +259,8 @@ class SynchronousServerTest(unittest.TestCase):
             self.assertEqual(server.control.Identity.VendorName, 'VendorName')
             self.assertFalse(server.threads[0].running)
 
-    def testUdpServerProcess(self):
-        ''' test that the synchronous UDP server processes requests '''
+    def test_udp_server_process(self):
+        """ test that the synchronous UDP server processes requests """
         with patch('SocketServer.ThreadingUDPServer') as mock_server:
             server = ModbusUdpServer(None)
             request = ('data', 'socket')
@@ -270,7 +270,7 @@ class SynchronousServerTest(unittest.TestCase):
     #-----------------------------------------------------------------------#
     # Test Serial Server
     #-----------------------------------------------------------------------#
-    def testSerialServerConnect(self):
+    def test_serial_server_connect(self):
         with patch.object(serial, 'Serial') as mock_serial:
             mock_serial.return_value = "socket"
             identity = ModbusDeviceIdentification(info={0x00: 'VendorName'})
@@ -286,18 +286,18 @@ class SynchronousServerTest(unittest.TestCase):
             server = ModbusSerialServer(None)
             self.assertEqual(server.socket, None)
 
-    def testSerialServerServeForever(self):
-        ''' test that the synchronous serial server closes correctly '''
+    def test_serial_server_serve_forever(self):
+        """ test that the synchronous serial server closes correctly """
         with patch.object(serial, 'Serial') as mock_serial:
-            with patch('pymodbus.server.sync.ModbusSingleRequestHandler') as mock_handler:
+            with patch('pymodbus3.server.sync.ModbusSingleRequestHandler') as mock_handler:
                 server = ModbusSerialServer(None)
                 instance = mock_handler.return_value
                 instance.handle.side_effect = server.server_close
                 server.serve_forever()
                 instance.handle.assert_any_call()
 
-    def testSerialServerClose(self):
-        ''' test that the synchronous serial server closes correctly '''
+    def test_serial_server_close(self):
+        """ test that the synchronous serial server closes correctly """
         with patch.object(serial, 'Serial') as mock_serial:
             instance = mock_serial.return_value
             server = ModbusSerialServer(None)
@@ -307,20 +307,20 @@ class SynchronousServerTest(unittest.TestCase):
     #-----------------------------------------------------------------------#
     # Test Synchronous Factories
     #-----------------------------------------------------------------------#
-    def testStartTcpServer(self):
-        ''' Test the tcp server starting factory '''
+    def test_start_tcp_server(self):
+        """ Test the tcp server starting factory """
         with patch.object(ModbusTcpServer, 'serve_forever') as mock_server:
             with patch.object(SocketServer.TCPServer, 'server_bind') as mock_binder:
                 StartTcpServer()
 
-    def testStartUdpServer(self):
-        ''' Test the udp server starting factory '''
+    def test_start_udp_server(self):
+        """ Test the udp server starting factory """
         with patch.object(ModbusUdpServer, 'serve_forever') as mock_server:
             with patch.object(SocketServer.UDPServer, 'server_bind') as mock_binder:
                 StartUdpServer()
 
-    def testStartSerialServer(self):
-        ''' Test the serial server starting factory '''
+    def test_start_serial_server(self):
+        """ Test the serial server starting factory """
         with patch.object(ModbusSerialServer, 'serve_forever') as mock_server:
             StartSerialServer()
 

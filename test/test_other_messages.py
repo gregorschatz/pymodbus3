@@ -1,11 +1,11 @@
-#!/usr/bin/env python
 import unittest
-from pymodbus.other_message import *
+from pymodbus3.other_message import *
+
 
 class ModbusOtherMessageTest(unittest.TestCase):
-    '''
-    This is the unittest for the pymodbus.other_message module
-    '''
+    """
+    This is the unittest for the pymodbus3.other_message module
+    """
 
     def setUp(self):
         self.requests = [
@@ -23,17 +23,17 @@ class ModbusOtherMessageTest(unittest.TestCase):
         ]
 
     def tearDown(self):
-        ''' Cleans up the test environment '''
+        """ Cleans up the test environment """
         del self.requests
         del self.responses
 
-    def testOtherMessagesToString(self):
+    def test_other_messages_to_string(self):
         for message in self.requests:
             self.assertNotEqual(str(message()), None)
         for message in self.responses:
             self.assertNotEqual(str(message()), None)
 
-    def testReadExceptionStatus(self):
+    def test_read_exception_status(self):
         request = ReadExceptionStatusRequest()
         request.decode('\x12')
         self.assertEqual(request.encode(), '')
@@ -44,7 +44,7 @@ class ModbusOtherMessageTest(unittest.TestCase):
         response.decode('\x12')
         self.assertEqual(response.status, 0x12)
 
-    def testGetCommEventCounter(self):
+    def test_get_comm_event_counter(self):
         request = GetCommEventCounterRequest()
         request.decode('\x12')
         self.assertEqual(request.encode(), '')
@@ -59,7 +59,7 @@ class ModbusOtherMessageTest(unittest.TestCase):
         response.status = False
         self.assertEqual(response.encode(), '\xFF\xFF\x00\x12')
 
-    def testGetCommEventLog(self):
+    def test_get_comm_event_log(self):
         request = GetCommEventLogRequest()
         request.decode('\x12')
         self.assertEqual(request.encode(), '')
@@ -76,16 +76,16 @@ class ModbusOtherMessageTest(unittest.TestCase):
         response.status = False
         self.assertEqual(response.encode(), '\x06\xff\xff\x00\x12\x00\x12')
 
-    def testGetCommEventLogWithEvents(self):
-        response = GetCommEventLogResponse(events=[0x12,0x34,0x56])
+    def test_get_comm_event_log_with_events(self):
+        response = GetCommEventLogResponse(events=[0x12, 0x34, 0x56])
         self.assertEqual(response.encode(), '\x09\x00\x00\x00\x00\x00\x00\x12\x34\x56')
         response.decode('\x09\x00\x00\x00\x12\x00\x12\x12\x34\x56')
         self.assertEqual(response.status, True)
         self.assertEqual(response.message_count, 0x12)
         self.assertEqual(response.event_count, 0x12)
-        self.assertEqual(response.events, [0x12,0x34,0x56])
+        self.assertEqual(response.events, [0x12, 0x34, 0x56])
 
-    def testReportSlaveId(self):
+    def test_report_slave_id(self):
         request = ReportSlaveIdRequest()
         request.decode('\x12')
         self.assertEqual(request.encode(), '')
