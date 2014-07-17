@@ -16,6 +16,7 @@ Released under the the BSD license
 from pymodbus3.version import Version
 __version__ = Version.get_current_version().short()
 __author__ = 'Galen Collins, Maxim Grischuk'
+__author_email__ = 'bashwork@gmail.com, uzumaxy@gmail.com'
 
 #---------------------------------------------------------------------------#
 # Block unhandled logging
