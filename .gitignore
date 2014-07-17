@@ -1,6 +1,56 @@
-*.pyc
-*.swp
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
 build/
+develop-eggs/
 dist/
-pymodbus.egg-info/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+*.pot
+
+# Sphinx documentation
+docs/_build/
+
+# IDE
+.idea/
+.project
+.pydevproject
+
+# Temporary files
+*.swp
+*~
+
+# Other
 .coverage
