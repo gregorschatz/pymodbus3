@@ -128,7 +128,9 @@ class ReadHoldingRegistersRequest(ReadRegistersRequestBase):
             return self.do_exception(ModbusExceptions.IllegalValue)
         if not context.validate(self.function_code, self.address, self.count):
             return self.do_exception(ModbusExceptions.IllegalAddress)
-        values = context.get_values(self.function_code, self.address, self.count)
+        values = context.get_values(
+            self.function_code, self.address, self.count
+        )
         return ReadHoldingRegistersResponse(values)
 
 
@@ -178,7 +180,9 @@ class ReadInputRegistersRequest(ReadRegistersRequestBase):
             return self.do_exception(ModbusExceptions.IllegalValue)
         if not context.validate(self.function_code, self.address, self.count):
             return self.do_exception(ModbusExceptions.IllegalAddress)
-        values = context.get_values(self.function_code, self.address, self.count)
+        values = context.get_values(
+            self.function_code, self.address, self.count
+        )
         return ReadInputRegistersResponse(values)
 
 
@@ -348,9 +352,8 @@ class ReadWriteMultipleRegistersResponse(ModbusResponse):
         """
         return 'ReadWriteNRegisterResponse ({0})'.format(len(self.registers))
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'ReadHoldingRegistersRequest',
     'ReadHoldingRegistersResponse',

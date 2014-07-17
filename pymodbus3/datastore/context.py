@@ -5,16 +5,11 @@ from pymodbus3.interfaces import IModbusSlaveContext
 from pymodbus3.datastore.store import ModbusSequentialDataBlock
 from pymodbus3.constants import Defaults
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Slave Contexts
-#---------------------------------------------------------------------------#
 class ModbusSlaveContext(IModbusSlaveContext):
     """
     This creates a modbus data model with each data access
@@ -82,7 +77,9 @@ class ModbusSlaveContext(IModbusSlaveContext):
         :param values: The new values to be set
         """
         address += 1  # section 4.4 of specification
-        _logger.debug('set_values[{0}] {1}:{2}'.format(fx, address, len(values)))
+        _logger.debug('set_values[{0}] {1}:{2}'.format(
+            fx, address, len(values)
+        ))
         self.store[self.decode(fx)].set_values(address, values)
 
 
@@ -155,4 +152,6 @@ class ModbusServerContext(object):
         if slave in self.__slaves:
             return self.__slaves.get(slave)
         else:
-            raise ParameterException('slave does not exist, or is out of range')
+            raise ParameterException(
+                'slave does not exist, or is out of range'
+            )

@@ -16,13 +16,11 @@ from pymodbus3.utilities import pack_bitstring
 
 _MCB = ModbusControlBlock()
 
-
-#---------------------------------------------------------------------------#
 # Diagnostic Function Codes Base Classes
 # diagnostic 08, 00-18,20
-#---------------------------------------------------------------------------#
 # TODO Make sure all the data is decoded from the response
-#---------------------------------------------------------------------------#
+
+
 class DiagnosticStatusRequest(ModbusRequest):
     """
     This is a base class for all of the diagnostic request functions
@@ -157,9 +155,8 @@ class DiagnosticStatusSimpleResponse(DiagnosticStatusResponse):
         self.message = data
 
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 00
-#---------------------------------------------------------------------------#
+# region Diagnostic Sub Code 00
+
 class ReturnQueryDataRequest(DiagnosticStatusRequest):
     """
     The data passed in the request data field is to be returned (looped back)
@@ -176,7 +173,8 @@ class ReturnQueryDataRequest(DiagnosticStatusRequest):
         DiagnosticStatusRequest.__init__(self, **kwargs)
         if isinstance(message, list):
             self.message = message
-        else: self.message = [message]
+        else:
+            self.message = [message]
 
     def execute(self, *args):
         """ Executes the loopback request (builds the response)
@@ -202,12 +200,14 @@ class ReturnQueryDataResponse(DiagnosticStatusResponse):
         DiagnosticStatusResponse.__init__(self, **kwargs)
         if isinstance(message, list):
             self.message = message
-        else: self.message = [message]
+        else:
+            self.message = [message]
+
+# endregion
 
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 01
-#---------------------------------------------------------------------------#
+# region Diagnostic Sub Code 01
+
 class RestartCommunicationsOptionRequest(DiagnosticStatusRequest):
     """
     The remote device serial line port must be initialized and restarted, and
@@ -235,7 +235,7 @@ class RestartCommunicationsOptionRequest(DiagnosticStatusRequest):
 
         :returns: The initialized response message
         """
-        #if _MCB.ListenOnly:
+        # if _MCB.ListenOnly:
         return RestartCommunicationsOptionResponse(self.message)
 
 
@@ -261,10 +261,11 @@ class RestartCommunicationsOptionResponse(DiagnosticStatusResponse):
         else:
             self.message = [ModbusStatus.Off]
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 02
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 02
+
 class ReturnDiagnosticRegisterRequest(DiagnosticStatusSimpleRequest):
     """
     The contents of the remote device's 16-bit diagnostic register are
@@ -277,7 +278,7 @@ class ReturnDiagnosticRegisterRequest(DiagnosticStatusSimpleRequest):
 
         :returns: The initialized response message
         """
-        #if _MCB.isListenOnly():
+        # if _MCB.isListenOnly():
         register = pack_bitstring(_MCB.get_diagnostic_register())
         return ReturnDiagnosticRegisterResponse(register)
 
@@ -289,10 +290,11 @@ class ReturnDiagnosticRegisterResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x0002
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 03
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 03
+
 class ChangeAsciiInputDelimiterRequest(DiagnosticStatusSimpleRequest):
     """
     The character 'CHAR' passed in the request data field becomes the end of
@@ -321,10 +323,11 @@ class ChangeAsciiInputDelimiterResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x0003
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 04
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 04
+
 class ForceListenOnlyModeRequest(DiagnosticStatusSimpleRequest):
     """
     Forces the addressed remote device to its Listen Only Mode for MODBUS
@@ -361,10 +364,11 @@ class ForceListenOnlyModeResponse(DiagnosticStatusResponse):
         DiagnosticStatusResponse.__init__(self, **kwargs)
         self.message = []
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 10
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 10
+
 class ClearCountersRequest(DiagnosticStatusSimpleRequest):
     """
     The goal is to clear ll counters and the diagnostic register.
@@ -388,10 +392,11 @@ class ClearCountersResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x000A
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 11
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 11
+
 class ReturnBusMessageCountRequest(DiagnosticStatusSimpleRequest):
     """
     The response data field returns the quantity of messages that the
@@ -417,10 +422,11 @@ class ReturnBusMessageCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x000B
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 12
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 12
+
 class ReturnBusCommunicationErrorCountRequest(DiagnosticStatusSimpleRequest):
     """
     The response data field returns the quantity of CRC errors encountered
@@ -446,10 +452,11 @@ class ReturnBusCommunicationErrorCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x000C
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 13
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 13
+
 class ReturnBusExceptionErrorCountRequest(DiagnosticStatusSimpleRequest):
     """
     The response data field returns the quantity of modbus exception
@@ -475,10 +482,11 @@ class ReturnBusExceptionErrorCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x000D
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 14
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 14
+
 class ReturnSlaveMessageCountRequest(DiagnosticStatusSimpleRequest):
     """
     The response data field returns the quantity of messages addressed to the
@@ -504,10 +512,11 @@ class ReturnSlaveMessageCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x000E
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 15
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 15
+
 class ReturnSlaveNoResponseCountRequest(DiagnosticStatusSimpleRequest):
     """
     The response data field returns the quantity of messages addressed to the
@@ -533,10 +542,11 @@ class ReturnSlaveNoResponseCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x000F
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 16
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 16
+
 class ReturnSlaveNAKCountRequest(DiagnosticStatusSimpleRequest):
     """
     The response data field returns the quantity of messages addressed to the
@@ -564,10 +574,11 @@ class ReturnSlaveNAKCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x0010
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 17
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 17
+
 class ReturnSlaveBusyCountRequest(DiagnosticStatusSimpleRequest):
     """
     The response data field returns the quantity of messages addressed to the
@@ -593,14 +604,17 @@ class ReturnSlaveBusyCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x0011
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 18
-#---------------------------------------------------------------------------#
-class ReturnSlaveBusCharacterOverrunCountRequest(DiagnosticStatusSimpleRequest):
+
+# region Diagnostic Sub Code 18
+
+class ReturnSlaveBusCharacterOverrunCountRequest(
+    DiagnosticStatusSimpleRequest
+):
     """
     The response data field returns the quantity of messages addressed to the
-    remote device that it could not handle due to a character overrun condition,
+    remote device that it couldn't handle due to a character overrun condition,
     since its last restart, clear counters operation, or power-up. A character
     overrun is caused by data characters arriving at the port faster than they
     can be stored, or by the loss of a character due to a hardware malfunction.
@@ -616,20 +630,23 @@ class ReturnSlaveBusCharacterOverrunCountRequest(DiagnosticStatusSimpleRequest):
         return ReturnSlaveBusCharacterOverrunCountResponse(count)
 
 
-class ReturnSlaveBusCharacterOverrunCountResponse(DiagnosticStatusSimpleResponse):
+class ReturnSlaveBusCharacterOverrunCountResponse(
+    DiagnosticStatusSimpleResponse
+):
     """
     The response data field returns the quantity of messages addressed to the
-    remote device that it could not handle due to a character overrun condition,
+    remote device that it couldn't handle due to a character overrun condition,
     since its last restart, clear counters operation, or power-up. A character
     overrun is caused by data characters arriving at the port faster than they
     can be stored, or by the loss of a character due to a hardware malfunction.
     """
     sub_function_code = 0x0012
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 19
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 19
+
 class ReturnIopOverrunCountRequest(DiagnosticStatusSimpleRequest):
     """
     An IOP overrun is caused by data characters arriving at the port
@@ -656,10 +673,11 @@ class ReturnIopOverrunCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x0013
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 20
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 20
+
 class ClearOverrunCountRequest(DiagnosticStatusSimpleRequest):
     """
     Clears the overrun error counter and reset the error flag
@@ -684,10 +702,11 @@ class ClearOverrunCountResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x0014
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Diagnostic Sub Code 21
-#---------------------------------------------------------------------------#
+
+# region Diagnostic Sub Code 21
+
 class GetClearModbusPlusRequest(DiagnosticStatusSimpleRequest):
     """
     In addition to the Function code (08) and Sub-function code
@@ -723,27 +742,45 @@ class GetClearModbusPlusResponse(DiagnosticStatusSimpleResponse):
     """
     sub_function_code = 0x0015
 
+# endregion
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
-    'DiagnosticStatusRequest', 'DiagnosticStatusResponse',
-    'ReturnQueryDataRequest', 'ReturnQueryDataResponse',
-    'RestartCommunicationsOptionRequest', 'RestartCommunicationsOptionResponse',
-    'ReturnDiagnosticRegisterRequest', 'ReturnDiagnosticRegisterResponse',
-    'ChangeAsciiInputDelimiterRequest', 'ChangeAsciiInputDelimiterResponse',
-    'ForceListenOnlyModeRequest', 'ForceListenOnlyModeResponse',
-    'ClearCountersRequest', 'ClearCountersResponse',
-    'ReturnBusMessageCountRequest', 'ReturnBusMessageCountResponse',
-    'ReturnBusCommunicationErrorCountRequest', 'ReturnBusCommunicationErrorCountResponse',
-    'ReturnBusExceptionErrorCountRequest', 'ReturnBusExceptionErrorCountResponse',
-    'ReturnSlaveMessageCountRequest', 'ReturnSlaveMessageCountResponse',
-    'ReturnSlaveNoResponseCountRequest', 'ReturnSlaveNoResponseCountResponse',
-    'ReturnSlaveNAKCountRequest', 'ReturnSlaveNAKCountResponse',
-    'ReturnSlaveBusyCountRequest', 'ReturnSlaveBusyCountResponse',
-    'ReturnSlaveBusCharacterOverrunCountRequest', 'ReturnSlaveBusCharacterOverrunCountResponse',
-    'ReturnIopOverrunCountRequest', 'ReturnIopOverrunCountResponse',
-    'ClearOverrunCountRequest', 'ClearOverrunCountResponse',
-    'GetClearModbusPlusRequest', 'GetClearModbusPlusResponse',
+    'DiagnosticStatusRequest',
+    'DiagnosticStatusResponse',
+    'ReturnQueryDataRequest',
+    'ReturnQueryDataResponse',
+    'RestartCommunicationsOptionRequest',
+    'RestartCommunicationsOptionResponse',
+    'ReturnDiagnosticRegisterRequest',
+    'ReturnDiagnosticRegisterResponse',
+    'ChangeAsciiInputDelimiterRequest',
+    'ChangeAsciiInputDelimiterResponse',
+    'ForceListenOnlyModeRequest',
+    'ForceListenOnlyModeResponse',
+    'ClearCountersRequest',
+    'ClearCountersResponse',
+    'ReturnBusMessageCountRequest',
+    'ReturnBusMessageCountResponse',
+    'ReturnBusCommunicationErrorCountRequest',
+    'ReturnBusCommunicationErrorCountResponse',
+    'ReturnBusExceptionErrorCountRequest',
+    'ReturnBusExceptionErrorCountResponse',
+    'ReturnSlaveMessageCountRequest',
+    'ReturnSlaveMessageCountResponse',
+    'ReturnSlaveNoResponseCountRequest',
+    'ReturnSlaveNoResponseCountResponse',
+    'ReturnSlaveNAKCountRequest',
+    'ReturnSlaveNAKCountResponse',
+    'ReturnSlaveBusyCountRequest',
+    'ReturnSlaveBusyCountResponse',
+    'ReturnSlaveBusCharacterOverrunCountRequest',
+    'ReturnSlaveBusCharacterOverrunCountResponse',
+    'ReturnIopOverrunCountRequest',
+    'ReturnIopOverrunCountResponse',
+    'ClearOverrunCountRequest',
+    'ClearOverrunCountResponse',
+    'GetClearModbusPlusRequest',
+    'GetClearModbusPlusResponse',
 ]

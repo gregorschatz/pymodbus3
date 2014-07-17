@@ -2,16 +2,11 @@
 
 from pymodbus3.interfaces import IModbusSlaveContext
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Context
-#---------------------------------------------------------------------------#
 class RemoteSlaveContext(IModbusSlaveContext):
     """ TODO
     This creates a modbus data model that connects to
@@ -65,7 +60,9 @@ class RemoteSlaveContext(IModbusSlaveContext):
         :param values: The new values to be set
         """
         # TODO deal with deferreds
-        _logger.debug('set values[{0}] {1}:{2}'.format(fx, address, len(values)))
+        _logger.debug('set values[{0}] {1}:{2}'.format(
+            fx, address, len(values))
+        )
         self.__set_callbacks[self.decode(fx)](address, values)
 
     def __str__(self):

@@ -16,9 +16,6 @@ from pymodbus3.pdu import ModbusExceptions
 _MCB = ModbusControlBlock()
 
 
-#---------------------------------------------------------------------------#
-# Read Device Information
-#---------------------------------------------------------------------------#
 class ReadDeviceInformationRequest(ModbusRequest):
     """
     This function code allows reading the identification and additional
@@ -27,7 +24,7 @@ class ReadDeviceInformationRequest(ModbusRequest):
 
     The Read Device Identification interface is modeled as an address space
     composed of a set of addressable data elements. The data elements are
-    called objects and an object Id identifies them.  
+    called objects and an object Id identifies them.
     """
     function_code = 0x2b
     sub_function_code = 0x0e
@@ -75,7 +72,9 @@ class ReadDeviceInformationRequest(ModbusRequest):
         if not (0x00 <= self.read_code <= 0x04):
             return self.do_exception(ModbusExceptions.IllegalValue)
 
-        information = DeviceInformationFactory.get(_MCB, self.read_code, self.object_id)
+        information = DeviceInformationFactory.get(
+            _MCB, self.read_code, self.object_id
+        )
         return ReadDeviceInformationResponse(self.read_code, information)
 
     def __str__(self):
@@ -83,7 +82,9 @@ class ReadDeviceInformationRequest(ModbusRequest):
 
         :returns: The string representation of the request
         """
-        return 'ReadDeviceInformationRequest({0},{1})'.format(self.read_code, self.object_id)
+        return 'ReadDeviceInformationRequest({0},{1})'.format(
+            self.read_code, self.object_id
+        )
 
 
 class ReadDeviceInformationResponse(ModbusResponse):
@@ -157,7 +158,9 @@ class ReadDeviceInformationResponse(ModbusResponse):
         self.information, count = {}, 6  # skip the header information
 
         while count < len(data):
-            object_id, object_length = struct.unpack('>BB', data[count:count+2])
+            object_id, object_length = struct.unpack(
+                '>BB', data[count:count+2]
+            )
             count += object_length + 2
             self.information[object_id] = data[count-object_length:count]
 
@@ -168,9 +171,8 @@ class ReadDeviceInformationResponse(ModbusResponse):
         """
         return 'ReadDeviceInformationResponse({0})'.format(self.read_code)
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'ReadDeviceInformationRequest', 'ReadDeviceInformationResponse',
 ]

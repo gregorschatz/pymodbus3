@@ -18,16 +18,11 @@ from pymodbus3.transaction import ModbusSocketFramer, ModbusAsciiFramer
 from pymodbus3.pdu import ModbusExceptions
 from pymodbus3.internal.ptwisted import InstallManagementConsole
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Modbus TCP Server
-#---------------------------------------------------------------------------#
 class ModbusTcpProtocol(protocol.Protocol):
     """ Implements a modbus server in twisted """
 
@@ -38,7 +33,9 @@ class ModbusTcpProtocol(protocol.Protocol):
                  protocol __init__, the client connection made is essentially
                  our __init__ method.
         """
-        _logger.debug('Client Connected [{0}]'.format(self.transport.getHost()))
+        _logger.debug(
+            'Client Connected [{0}]'.format(self.transport.getHost())
+        )
         self.framer = self.factory.framer(decoder=self.factory.decoder)
 
     def connection_lost(self, reason):
@@ -69,7 +66,7 @@ class ModbusTcpProtocol(protocol.Protocol):
         except Exception as ex:
             _logger.debug('Datastore unable to fulfill request: ' + str(ex))
             response = request.do_exception(ModbusExceptions.SlaveFailure)
-        #self.framer.populate_result(response)
+        # self.framer.populate_result(response)
         response.transaction_id = request.transaction_id
         response.unit_id = request.unit_id
         self.send(response)
@@ -118,9 +115,6 @@ class ModbusServerFactory(ServerFactory):
             self.control.Identity.update(identity)
 
 
-#---------------------------------------------------------------------------#
-# Modbus UDP Server
-#---------------------------------------------------------------------------#
 class ModbusUdpProtocol(protocol.DatagramProtocol):
     """ Implements a modbus udp server in twisted """
 
@@ -167,7 +161,7 @@ class ModbusUdpProtocol(protocol.DatagramProtocol):
         except Exception as ex:
             _logger.debug('Datastore unable to fulfill request: ' + str(ex))
             response = request.do_exception(ModbusExceptions.SlaveFailure)
-        #self.framer.populate_result(response)
+        # self.framer.populate_result(response)
         response.transaction_id = request.transaction_id
         response.unit_id = request.unit_id
         self.send(response, addr)
@@ -185,9 +179,8 @@ class ModbusUdpProtocol(protocol.DatagramProtocol):
         return self.transport.write(pdu, addr)
 
 
-#---------------------------------------------------------------------------#
-# Starting Factories
-#---------------------------------------------------------------------------#
+# region Starting Factories
+
 def StartTcpServer(context, identity=None, address=None, console=False):
     """ Helper method to start the Modbus Async TCP server
 
@@ -227,7 +220,9 @@ def StartUdpServer(context, identity=None, address=None):
     reactor.run()
 
 
-def StartSerialServer(context, identity=None, framer=ModbusAsciiFramer, **kwargs):
+def StartSerialServer(
+        context, identity=None, framer=ModbusAsciiFramer, **kwargs
+):
     """ Helper method to start the Modbus Async Serial server
 
     :param context: The server data context
@@ -254,9 +249,9 @@ def StartSerialServer(context, identity=None, framer=ModbusAsciiFramer, **kwargs
     SerialPort(protocol, port, reactor, baudrate)
     reactor.run()
 
-#---------------------------------------------------------------------------#
+# endregion
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'StartTcpServer', 'StartUdpServer', 'StartSerialServer',
 ]

@@ -14,9 +14,7 @@ from pymodbus3.device import ModbusControlBlock
 _MCB = ModbusControlBlock()
 
 
-#---------------------------------------------------------------------------#
 # TODO Make these only work on serial
-#---------------------------------------------------------------------------#
 class ReadExceptionStatusRequest(ModbusRequest):
     """
     This function code is used to read the contents of eight Exception Status
@@ -98,15 +96,15 @@ class ReadExceptionStatusResponse(ModbusResponse):
 
         :returns: The string representation of the response
         """
-        return 'ReadExceptionStatusResponse({0}, {1})'.format(self.function_code, self.status)
+        return 'ReadExceptionStatusResponse({0}, {1})'.format(
+            self.function_code, self.status
+        )
 
 # Encapsulate interface transport 43, 14
 # CANopen general reference 43, 13
 
 
-#---------------------------------------------------------------------------#
 # TODO Make these only work on serial
-#---------------------------------------------------------------------------#
 class GetCommEventCounterRequest(ModbusRequest):
     """
     This function code is used to get a status word and an event count from
@@ -209,9 +207,7 @@ class GetCommEventCounterResponse(ModbusResponse):
         )
 
 
-#---------------------------------------------------------------------------#
 # TODO Make these only work on serial
-#---------------------------------------------------------------------------#
 class GetCommEventLogRequest(ModbusRequest):
     """
     This function code is used to get a status word, event count, message
@@ -333,13 +329,14 @@ class GetCommEventLogResponse(ModbusResponse):
         :returns: The string representation of the response
         """
         return 'GetCommEventLogResponse({0}, {1}, {2}, {3})'.format(
-            self.function_code, self.status, self.message_count, self.event_count
+            self.function_code,
+            self.status,
+            self.message_count,
+            self.event_count
         )
 
 
-#---------------------------------------------------------------------------#
 # TODO Make these only work on serial
-#---------------------------------------------------------------------------#
 class ReportSlaveIdRequest(ModbusRequest):
     """
     This function code is used to read the description of the type, the
@@ -436,14 +433,11 @@ class ReportSlaveIdResponse(ModbusResponse):
             self.function_code, self.identifier, self.status
         )
 
-#---------------------------------------------------------------------------#
 # TODO Make these only work on serial
-#---------------------------------------------------------------------------#
 # report device identification 43, 14
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'ReadExceptionStatusRequest',
     'ReadExceptionStatusResponse',

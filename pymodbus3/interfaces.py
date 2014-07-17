@@ -11,10 +11,6 @@ the pymodbus3 library.
 from abc import ABCMeta, abstractmethod
 from pymodbus3.exceptions import ModbusIOException
 
-#---------------------------------------------------------------------------#
-# Generic
-#---------------------------------------------------------------------------#
-
 
 class Singleton(object):
     """
@@ -29,9 +25,6 @@ class Singleton(object):
         return cls._inst
 
 
-#---------------------------------------------------------------------------#
-# Project Specific
-#---------------------------------------------------------------------------#
 class IModbusDecoder(metaclass=ABCMeta):
     """ Modbus Decoder Base Class
 
@@ -324,9 +317,8 @@ class IPayloadBuilder(metaclass=ABCMeta):
         """
         raise NotImplementedError('set context values')
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'Singleton',
     'IModbusDecoder',

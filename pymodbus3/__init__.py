@@ -18,9 +18,7 @@ __version__ = Version.get_current_version().short()
 __author__ = 'Galen Collins, Maxim Grischuk'
 __author_email__ = 'bashwork@gmail.com, uzumaxy@gmail.com'
 
-#---------------------------------------------------------------------------#
 # Block unhandled logging
-#---------------------------------------------------------------------------#
 import logging as __logging
 try:
     from logging import NullHandler as CustomNullHandler

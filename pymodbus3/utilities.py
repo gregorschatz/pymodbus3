@@ -11,9 +11,8 @@ from collections import Callable
 import struct
 
 
-#---------------------------------------------------------------------------#
-# Helpers
-#---------------------------------------------------------------------------#
+# region Helpers
+
 def default(value):
     """
     Given a python object, return the default value
@@ -39,17 +38,19 @@ def dict_property(store, index):
         setter = lambda self, value: store(self).__setitem__(index, value)
     elif isinstance(store, str):
         getter = lambda self: self.__getattribute__(store)[index]
-        setter = lambda self, value: self.__getattribute__(store).__setitem__(index, value)
+        setter = lambda self, value:\
+            self.__getattribute__(store).__setitem__(index, value)
     else:
         getter = lambda self: store[index]
         setter = lambda self, value: store.__setitem__(index, value)
 
     return property(getter, setter)
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Bit packing functions
-#---------------------------------------------------------------------------#
+
+# region Bit Packing Functions
+
 def pack_bitstring(bits):
     """ Creates a string out of an array of bits
 
@@ -96,10 +97,11 @@ def unpack_bitstring(string):
             value >>= 1
     return bits
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Error Detection Functions
-#---------------------------------------------------------------------------#
+
+# region Error Detection Functions
+
 def __generate_crc16_table():
     """ Generates a crc16 lookup table
 
@@ -196,9 +198,10 @@ def rtu_frame_size(data, byte_count_pos):
     """
     return data[byte_count_pos] + byte_count_pos + 3
 
-#---------------------------------------------------------------------------#
+# endregion
+
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'pack_bitstring',
     'unpack_bitstring',

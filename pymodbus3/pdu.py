@@ -9,16 +9,13 @@ from pymodbus3.utilities import rtu_frame_size
 import struct
 from collections import Callable
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Base PDU's
-#---------------------------------------------------------------------------#
+# region Base PDU's
+
 class ModbusPDU(object):
     """
     Base class for all Modbus messages
@@ -89,7 +86,9 @@ class ModbusPDU(object):
         elif hasattr(cls, '_rtu_byte_count_pos'):
             return rtu_frame_size(buffer, cls._rtu_byte_count_pos)
         else:
-            raise NotImplementedError('Cannot determine RTU frame size for '.format(cls.__name__))
+            raise NotImplementedError(
+                'Cannot determine RTU frame size for '.format(cls.__name__)
+            )
 
 
 class ModbusRequest(ModbusPDU):
@@ -105,7 +104,9 @@ class ModbusRequest(ModbusPDU):
         :param exception: The exception to return
         :raises: An exception response
         """
-        _logger.error('Exception Response F({0}) E({1})'.format(self.function_code, exception))
+        _logger.error('Exception Response F({0}) E({1})'.format(
+            self.function_code, exception
+        ))
         return ExceptionResponse(self.function_code, exception)
 
 
@@ -129,10 +130,11 @@ class ModbusResponse(ModbusPDU):
         """ Proxy to the lower level initializer """
         ModbusPDU.__init__(self, **kwargs)
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Exception PDU's
-#---------------------------------------------------------------------------#
+
+# region Exception PDU's
+
 class ModbusExceptions(Singleton):
     """
     An enumeration of the valid modbus exceptions
@@ -150,8 +152,8 @@ class ModbusExceptions(Singleton):
     @classmethod
     def decode(cls, code):
         """ Given an error code, translate it to a
-        string error name. 
-        
+        string error name.
+
         :param code: The code number to translate
         """
         values = dict()
@@ -236,9 +238,10 @@ class IllegalFunctionRequest(ModbusRequest):
         """
         return ExceptionResponse(self.function_code, self.ErrorCode)
 
-#---------------------------------------------------------------------------#
+# endregion
+
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'ModbusRequest',
     'ModbusResponse',

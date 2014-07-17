@@ -27,16 +27,11 @@ from pymodbus3.mei_message import *
 from pymodbus3.register_read_message import *
 from pymodbus3.register_write_message import *
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Server Decoder
-#---------------------------------------------------------------------------#
 class ServerDecoder(IModbusDecoder):
     """ Request Message Factory (Server)
 
@@ -93,7 +88,9 @@ class ServerDecoder(IModbusDecoder):
         """ Initializes the client lookup tables
         """
         functions = set(f.function_code for f in self.__function_table)
-        self.__lookup = dict([(f.function_code, f) for f in self.__function_table])
+        self.__lookup = dict()
+        for f in self.__function_table:
+            self.__lookup[f.function_code] = f
         self.__sub_lookup = dict((f, {}) for f in functions)
         for f in self.__sub_function_table:
             self.__sub_lookup[f.function_code][f.sub_function_code] = f
@@ -143,9 +140,6 @@ class ServerDecoder(IModbusDecoder):
         return request
 
 
-#---------------------------------------------------------------------------#
-# Client Decoder
-#---------------------------------------------------------------------------#
 class ClientDecoder(IModbusDecoder):
     """ Response Message Factory (Client)
 
@@ -194,7 +188,6 @@ class ClientDecoder(IModbusDecoder):
         ReturnIopOverrunCountResponse,
         ClearOverrunCountResponse,
         GetClearModbusPlusResponse,
-
         ReadDeviceInformationResponse,
     ]
 
@@ -202,7 +195,9 @@ class ClientDecoder(IModbusDecoder):
         """ Initializes the client lookup tables
         """
         functions = set(f.function_code for f in self.__function_table)
-        self.__lookup = dict([(f.function_code, f) for f in self.__function_table])
+        self.__lookup = dict()
+        for f in self.__function_table:
+            self.__lookup[f.function_code] = f
         self.__sub_lookup = dict((f, {}) for f in functions)
         for f in self.__sub_function_table:
             self.__sub_lookup[f.function_code][f.sub_function_code] = f
@@ -241,7 +236,9 @@ class ClientDecoder(IModbusDecoder):
         response = self.__lookup.get(function_code, lambda: None)()
         if function_code > 0x80:
             code = function_code & 0x7f  # strip error portion
-            response = ExceptionResponse(code, ModbusExceptions.IllegalFunction)
+            response = ExceptionResponse(
+                code, ModbusExceptions.IllegalFunction
+            )
         if not response:
             raise ModbusException('Unknown response ' + str(function_code))
         response.decode(data[1:])
@@ -254,7 +251,6 @@ class ClientDecoder(IModbusDecoder):
 
         return response
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = ['ServerDecoder', 'ClientDecoder']

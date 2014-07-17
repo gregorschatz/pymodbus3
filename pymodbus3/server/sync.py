@@ -17,16 +17,13 @@ from pymodbus3.transaction import *
 from pymodbus3.pdu import ModbusExceptions
 import socketserver
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Protocol Handlers
-#---------------------------------------------------------------------------#
+# region Protocol Handlers
+
 class ModbusBaseRequestHandler(socketserver.BaseRequestHandler):
     """ Implements the modbus server protocol
 
@@ -37,7 +34,9 @@ class ModbusBaseRequestHandler(socketserver.BaseRequestHandler):
     def setup(self):
         """ Callback for when a client connects
         """
-        _logger.debug('Client Connected [{0}:{1}]'.format(*self.client_address))
+        _logger.debug(
+            'Client Connected [{0}:{1}]'.format(*self.client_address)
+        )
         self.running = True
         self.framer = self.server.framer(self.server.decoder)
         self.server.threads.append(self)
@@ -45,7 +44,9 @@ class ModbusBaseRequestHandler(socketserver.BaseRequestHandler):
     def finish(self):
         """ Callback for when a client disconnects
         """
-        _logger.debug('Client Disconnected [{0}:{1}]'.format(*self.client_address))
+        _logger.debug(
+            'Client Disconnected [{0}:{1}]'.format(*self.client_address)
+        )
         self.server.threads.remove(self)
 
     def execute(self, request):
@@ -63,9 +64,8 @@ class ModbusBaseRequestHandler(socketserver.BaseRequestHandler):
         response.unit_id = request.unit_id
         self.send(response)
 
-    #---------------------------------------------------------------------------#
-    # Base class implementations
-    #---------------------------------------------------------------------------#
+    # region Base Class Implementations
+
     def handle(self):
         """ Callback when we receive any data
         """
@@ -77,6 +77,10 @@ class ModbusBaseRequestHandler(socketserver.BaseRequestHandler):
         :param message: The unencoded modbus response
         """
         raise NotImplementedError('Method not implemented by derived class')
+
+    # endregion
+
+    pass
 
 
 class ModbusSingleRequestHandler(ModbusBaseRequestHandler):
@@ -106,7 +110,7 @@ class ModbusSingleRequestHandler(ModbusBaseRequestHandler):
         :param message: The unencoded modbus response
         """
         if message.should_respond:
-            #self.server.control.Counter.BusMessage += 1
+            # self.server.control.Counter.BusMessage += 1
             pdu = self.framer.build_packet(message)
             if _logger.isEnabledFor(logging.DEBUG):
                 _logger.debug('send: ' + str(b2a_hex(pdu)))
@@ -146,7 +150,7 @@ class ModbusConnectedRequestHandler(ModbusBaseRequestHandler):
         :param message: The unencoded modbus response
         """
         if message.should_respond:
-            #self.server.control.Counter.BusMessage += 1
+            # self.server.control.Counter.BusMessage += 1
             pdu = self.framer.build_packet(message)
             if _logger.isEnabledFor(logging.DEBUG):
                 _logger.debug('send: ' + str(b2a_hex(pdu)))
@@ -188,16 +192,17 @@ class ModbusDisconnectedRequestHandler(ModbusBaseRequestHandler):
         :param message: The unencoded modbus response
         """
         if message.should_respond:
-            #self.server.control.Counter.BusMessage += 1
+            # self.server.control.Counter.BusMessage += 1
             pdu = self.framer.build_packet(message)
             if _logger.isEnabledFor(logging.DEBUG):
                 _logger.debug('send: ' + str(b2a_hex(pdu)))
             return self.request.sendto(pdu, self.client_address)
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Server Implementations
-#---------------------------------------------------------------------------#
+
+# region Server Implementations
+
 class ModbusTcpServer(socketserver.ThreadingTCPServer):
     """
     A modbus threaded tcp socket server
@@ -228,7 +233,9 @@ class ModbusTcpServer(socketserver.ThreadingTCPServer):
         if isinstance(identity, ModbusDeviceIdentification):
             self.control.Identity.update(identity)
 
-        socketserver.ThreadingTCPServer.__init__(self, self.address, ModbusConnectedRequestHandler)
+        socketserver.ThreadingTCPServer.__init__(
+            self, self.address, ModbusConnectedRequestHandler
+        )
 
     def process_request(self, request, client):
         """ Callback for connecting a new client thread
@@ -278,7 +285,9 @@ class ModbusUdpServer(socketserver.ThreadingUDPServer):
         if isinstance(identity, ModbusDeviceIdentification):
             self.control.Identity.update(identity)
 
-        socketserver.ThreadingUDPServer.__init__(self, self.address, ModbusDisconnectedRequestHandler)
+        socketserver.ThreadingUDPServer.__init__(
+            self, self.address, ModbusDisconnectedRequestHandler
+        )
 
     def process_request(self, request, client):
         """ Callback for connecting a new client thread
@@ -371,7 +380,9 @@ class ModbusSerialServer(object):
         request = self.socket
         request.send = request.write
         request.receive = request.read
-        handler = ModbusSingleRequestHandler(request, (self.device, self.device), self)
+        handler = ModbusSingleRequestHandler(
+            request, (self.device, self.device), self
+        )
         return handler
 
     def serve_forever(self):
@@ -389,10 +400,11 @@ class ModbusSerialServer(object):
         self.is_running = False
         self.socket.close()
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Creation Factories
-#---------------------------------------------------------------------------#
+
+# region Creation Factories
+
 def StartTcpServer(context=None, identity=None, address=None):
     """ A factory to start and run a tcp modbus server
 
@@ -433,9 +445,9 @@ def StartSerialServer(context=None, identity=None, **kwargs):
     server = ModbusSerialServer(context, framer, identity, **kwargs)
     server.serve_forever()
 
-#---------------------------------------------------------------------------#
+# endregion
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'StartTcpServer', 'StartUdpServer', 'StartSerialServer'
 ]

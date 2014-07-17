@@ -327,7 +327,6 @@ class BinaryPayloadDecoder(object):
         self._pointer += size
         return self._payload[self._pointer - size:self._pointer]
 
-#---------------------------------------------------------------------------#
+
 # Exported Identifiers
-#---------------------------------------------------------------------------#
 __all__ = ['BinaryPayloadBuilder', 'BinaryPayloadDecoder']

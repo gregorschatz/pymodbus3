@@ -134,7 +134,6 @@ class ModbusClientMixin(object):
         request = ReadWriteMultipleRegistersRequest(*args, **kwargs)
         return self.execute(request)
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = ['ModbusClientMixin', ]

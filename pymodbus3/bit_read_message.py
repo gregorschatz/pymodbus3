@@ -143,7 +143,9 @@ class ReadCoilsRequest(ReadBitsRequestBase):
             return self.do_exception(ModbusExceptions.IllegalValue)
         if not context.validate(self.function_code, self.address, self.count):
             return self.do_exception(ModbusExceptions.IllegalAddress)
-        values = context.get_values(self.function_code, self.address, self.count)
+        values = context.get_values(
+            self.function_code, self.address, self.count
+        )
         return ReadCoilsResponse(values)
 
 
@@ -200,9 +202,13 @@ class ReadDiscreteInputsRequest(ReadBitsRequestBase):
         """
         if not (1 <= self.count <= 0x7d0):
             return self.do_exception(ModbusExceptions.IllegalValue)
-        if not context.validate(self.function_code, self.address, self.count):
+        if not context.validate(
+                self.function_code, self.address, self.count
+        ):
             return self.do_exception(ModbusExceptions.IllegalAddress)
-        values = context.get_values(self.function_code, self.address, self.count)
+        values = context.get_values(
+            self.function_code, self.address, self.count
+        )
         return ReadDiscreteInputsResponse(values)
 
 
@@ -228,9 +234,8 @@ class ReadDiscreteInputsResponse(ReadBitsResponseBase):
         """
         ReadBitsResponseBase.__init__(self, values, **kwargs)
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'ReadCoilsRequest',
     'ReadCoilsResponse',

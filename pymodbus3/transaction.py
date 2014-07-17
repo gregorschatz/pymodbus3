@@ -12,16 +12,13 @@ from pymodbus3.interfaces import IModbusFramer
 from pymodbus3.utilities import check_crc, compute_crc
 from pymodbus3.utilities import check_lrc, compute_lrc
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# The Global Transaction Manager
-#---------------------------------------------------------------------------#
+# region The Global Transaction Manager
+
 class ModbusTransactionManager(object):
     """ Implements a transaction for a manager
 
@@ -50,7 +47,9 @@ class ModbusTransactionManager(object):
         self.tid = Defaults.TransactionId
         self.client = client
         self.framer = client and client.framer
-        self.retry_on_empty = kwargs.get('retry_on_empty', Defaults.RetryOnEmpty)
+        self.retry_on_empty = kwargs.get(
+            'retry_on_empty', Defaults.RetryOnEmpty
+        )
         self.retries = kwargs.get('retries', Defaults.Retries)
 
     def execute(self, request):
@@ -67,7 +66,9 @@ class ModbusTransactionManager(object):
                 self.client.connect()
                 self.client.send(self.client.framer.build_packet(request))
                 if not self.handle_message_framing():
-                    raise ModbusIOException('Server responded with bad response')
+                    raise ModbusIOException(
+                        'Server responded with bad response'
+                    )
                 break
             except socket.error as msg:
                 self.client.close()
@@ -305,10 +306,11 @@ class FifoTransactionManager(ModbusTransactionManager):
         if self.transactions:
             self.transactions.pop(0)
 
+# endregion
 
-#---------------------------------------------------------------------------#
-# Modbus TCP Message
-#---------------------------------------------------------------------------#
+
+# region Messages
+
 class ModbusSocketFramer(IModbusFramer):
     """ Modbus Socket Frame controller
 
@@ -445,9 +447,6 @@ class ModbusSocketFramer(IModbusFramer):
     pass
 
 
-#---------------------------------------------------------------------------#
-# Modbus RTU Message
-#---------------------------------------------------------------------------#
 class ModbusRtuFramer(IModbusFramer):
     """
     Modbus RTU Frame controller::
@@ -620,9 +619,6 @@ class ModbusRtuFramer(IModbusFramer):
     pass
 
 
-#---------------------------------------------------------------------------#
-# Modbus ASCII Message
-#---------------------------------------------------------------------------#
 class ModbusAsciiFramer(IModbusFramer):
     """
     Modbus ASCII Frame Controller::
@@ -771,9 +767,6 @@ class ModbusAsciiFramer(IModbusFramer):
     pass
 
 
-#---------------------------------------------------------------------------#
-# Modbus Binary Message
-#---------------------------------------------------------------------------#
 class ModbusBinaryFramer(IModbusFramer):
     """
     Modbus Binary Frame Controller::
@@ -833,7 +826,8 @@ class ModbusBinaryFramer(IModbusFramer):
         if end != -1:
             self.header['len'] = end
             self.header['uid'] = struct.unpack('>B', self.buffer[1:2])
-            self.header['crc'] = struct.unpack('>H', self.buffer[end - 2:end])[0]
+            self.header['crc'] =\
+                struct.unpack('>H', self.buffer[end - 2:end])[0]
             data = self.buffer[start + 1:end - 2]
             return check_crc(data, self.header['crc'])
         return False
@@ -942,10 +936,10 @@ class ModbusBinaryFramer(IModbusFramer):
 
     pass
 
+# endregion
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'FifoTransactionManager',
     'DictTransactionManager',

@@ -43,16 +43,11 @@ from pymodbus3.transaction import DictTransactionManager
 from pymodbus3.client.common import ModbusClientMixin
 from twisted.python.failure import Failure
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Connected Client Protocols
-#---------------------------------------------------------------------------#
 class ModbusClientProtocol(protocol.Protocol, ModbusClientMixin):
     """
     This represents the base modbus client protocol.  All the application
@@ -133,18 +128,7 @@ class ModbusClientProtocol(protocol.Protocol, ModbusClientMixin):
         self.transaction.add_transaction(d, tid)
         return d
 
-    #----------------------------------------------------------------------#
-    # Extra Functions
-    #----------------------------------------------------------------------#
-    #if send_failed:
-    #       if self.retry > 0:
-    #               deferLater(clock, self.delay, send, message)
-    #               self.retry -= 1
 
-
-#---------------------------------------------------------------------------#
-# Not Connected Client Protocol
-#---------------------------------------------------------------------------#
 class ModbusUdpClientProtocol(protocol.DatagramProtocol, ModbusClientMixin):
     """
     This represents the base modbus client protocol.  All the application
@@ -205,17 +189,14 @@ class ModbusUdpClientProtocol(protocol.DatagramProtocol, ModbusClientMixin):
         return d
 
 
-#---------------------------------------------------------------------------#
-# Client Factories
-#---------------------------------------------------------------------------#
 class ModbusClientFactory(protocol.ReconnectingClientFactory):
     """ Simple client protocol factory """
 
     protocol = ModbusClientProtocol
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
+
 __all__ = [
     'ModbusClientProtocol',
     'ModbusUdpClientProtocol',

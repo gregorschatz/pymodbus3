@@ -3,20 +3,15 @@
 """
 A collection of twisted utility code
 """
-#from twisted.cred import portal, checkers
-#from twisted.conch import manhole, manhole_ssh
-#from twisted.conch.insults import insults
+'''from twisted.cred import portal, checkers
+from twisted.conch import manhole, manhole_ssh
+from twisted.conch.insults import insults'''
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Twisted Helper Methods
-#---------------------------------------------------------------------------#
 def InstallManagementConsole(namespace, users={'admin': 'admin'}, port=503):
     """ Helper method to start an ssh management console
         for the modbus server.
@@ -38,4 +33,3 @@ def InstallManagementConsole(namespace, users={'admin': 'admin'}, port=503):
     p = portal.Portal(r, [c])
     factory = manhole_ssh.ConchFactory(p)
     reactor.listenTCP(port, factory)
-

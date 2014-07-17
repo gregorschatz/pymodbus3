@@ -14,11 +14,9 @@ from pymodbus3.pdu import ModbusExceptions
 from pymodbus3.utilities import pack_bitstring, unpack_bitstring
 from collections import Iterable
 
-#---------------------------------------------------------------------------#
+
 # Local Constants
-#---------------------------------------------------------------------------#
 # These are defined in the spec to turn a coil on/off
-#---------------------------------------------------------------------------#
 _turn_coil_on = struct.pack('>H', ModbusStatus.On)
 _turn_coil_off = struct.pack('>H', ModbusStatus.Off)
 
@@ -79,8 +77,8 @@ class WriteSingleCoilRequest(ModbusRequest):
         :param context: The datastore to request from
         :returns: The populated response or exception message
         """
-        #if self.value not in [ModbusStatus.Off, ModbusStatus.On]:
-        #    return self.do_exception(ModbusExceptions.IllegalValue)
+        '''if self.value not in [ModbusStatus.Off, ModbusStatus.On]:
+            return self.do_exception(ModbusExceptions.IllegalValue)'''
         if not context.validate(self.function_code, self.address, 1):
             return self.do_exception(ModbusExceptions.IllegalAddress)
 
@@ -93,7 +91,9 @@ class WriteSingleCoilRequest(ModbusRequest):
 
         :return: A string representation of the instance
         """
-        return 'WriteCoilRequest({0}, {1}) => '.format(self.address, self.value)
+        return 'WriteCoilRequest({0}, {1}) => '.format(
+            self.address, self.value
+        )
 
 
 class WriteSingleCoilResponse(ModbusResponse):
@@ -213,7 +213,9 @@ class WriteMultipleCoilsRequest(ModbusRequest):
 
         :returns: A string representation of the instance
         """
-        return 'WriteMultipleCoilRequest ({0}) => {1} '.format(self.address, len(self.values))
+        return 'WriteMultipleCoilRequest ({0}) => {1} '.format(
+            self.address, len(self.values)
+        )
 
 
 class WriteMultipleCoilsResponse(ModbusResponse):
@@ -253,11 +255,12 @@ class WriteMultipleCoilsResponse(ModbusResponse):
 
         :returns: A string representation of the instance
         """
-        return 'WriteMultipleCoilResponse({0}, {1})'.format(self.address, self.count)
+        return 'WriteMultipleCoilResponse({0}, {1})'.format(
+            self.address, self.count
+        )
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'WriteSingleCoilRequest',
     'WriteSingleCoilResponse',

@@ -53,9 +53,8 @@ class ConnectionException(ModbusException):
         message = '[Connection] ' + str(string)
         ModbusException.__init__(self, message)
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'ModbusException',
     'ModbusIOException',

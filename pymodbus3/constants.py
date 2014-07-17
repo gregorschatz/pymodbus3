@@ -253,9 +253,8 @@ class FramerState(Singleton):
     CompleteFrame = 4
     ErrorInFrame = 5
 
-#---------------------------------------------------------------------------#
+
 # Exported Identifiers
-#---------------------------------------------------------------------------#
 __all__ = [
     'Defaults',
     'ModbusStatus',

@@ -51,16 +51,11 @@ based on their preference.
 from pymodbus3.exceptions import ParameterException
 from collections import Iterable
 
-#---------------------------------------------------------------------------#
 # Logging
-#---------------------------------------------------------------------------#
 import logging
 _logger = logging.getLogger(__name__)
 
 
-#---------------------------------------------------------------------------#
-# Datablock Storage
-#---------------------------------------------------------------------------#
 class BaseModbusDataBlock(object):
     """
     Base class for a modbus datastore
@@ -121,7 +116,9 @@ class BaseModbusDataBlock(object):
 
         :returns: A string representation of the datastore
         """
-        return 'DataStore({0}, {1})'.format(len(self.values), self.default_value)
+        return 'DataStore({0}, {1})'.format(
+            len(self.values), self.default_value
+        )
 
     def __iter__(self):
         """ Iterate over the data block data
@@ -207,7 +204,9 @@ class ModbusSparseDataBlock(BaseModbusDataBlock):
         elif isinstance(values, Iterable):
             self.values = dict(enumerate(values))
         else:
-            raise ParameterException('Values for datastore must be a list or dictionary')
+            raise ParameterException(
+                'Values for datastore must be a list or dictionary'
+            )
         self.default_value = self.values.values().__next__().__class__()
         self.address = self.values.keys().__next__()
 

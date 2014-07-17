@@ -14,9 +14,6 @@ from pymodbus3.utilities import dict_property
 import struct
 
 
-#---------------------------------------------------------------------------#
-# Network Access Control
-#---------------------------------------------------------------------------#
 class ModbusAccessControl(Singleton):
     """
     This is a simple implementation of a Network Management System table.
@@ -74,9 +71,6 @@ class ModbusAccessControl(Singleton):
         return host in self.__nmstable
 
 
-#---------------------------------------------------------------------------#
-# Modbus Plus Statistics
-#---------------------------------------------------------------------------#
 class ModbusPlusStatistics(object):
     """
     This is used to maintain the current modbus plus statistics count. As of
@@ -176,9 +170,6 @@ class ModbusPlusStatistics(object):
         return total
 
 
-#---------------------------------------------------------------------------#
-# Device Information Control
-#---------------------------------------------------------------------------#
 class ModbusDeviceIdentification(object):
     """
     This is used to supply the device identification
@@ -267,9 +258,8 @@ class ModbusDeviceIdentification(object):
         """
         return 'DeviceIdentity'
 
-    #-------------------------------------------------------------------------#
-    # Properties
-    #-------------------------------------------------------------------------#
+    # region Properties
+
     VendorName = dict_property(lambda s: s.__data, 0)
     ProductCode = dict_property(lambda s: s.__data, 1)
     MajorMinorRevision = dict_property(lambda s: s.__data, 2)
@@ -277,6 +267,10 @@ class ModbusDeviceIdentification(object):
     ProductName = dict_property(lambda s: s.__data, 4)
     ModelName = dict_property(lambda s: s.__data, 5)
     UserApplicationName = dict_property(lambda s: s.__data, 6)
+
+    # endregion
+
+    pass
 
 
 class DeviceInformationFactory(Singleton):
@@ -286,10 +280,14 @@ class DeviceInformationFactory(Singleton):
     """
 
     __lookup = {
-        DeviceInformation.Basic: lambda c, r, i: c.__gets(r, list(range(0x00, 0x03))),
-        DeviceInformation.Regular: lambda c, r, i: c.__gets(r, list(range(0x00, 0x08))),
-        DeviceInformation.Extended: lambda c, r, i: c.__gets(r, list(range(0x80, i))),
-        DeviceInformation.Specific: lambda c, r, i: c.__get(r, i),
+        DeviceInformation.Basic:
+        lambda c, r, i: c.__gets(r, list(range(0x00, 0x03))),
+        DeviceInformation.Regular:
+        lambda c, r, i: c.__gets(r, list(range(0x00, 0x08))),
+        DeviceInformation.Extended:
+        lambda c, r, i: c.__gets(r, list(range(0x80, i))),
+        DeviceInformation.Specific:
+        lambda c, r, i: c.__get(r, i),
     }
 
     @classmethod
@@ -325,9 +323,6 @@ class DeviceInformationFactory(Singleton):
         return dict((oid, identity[oid]) for oid in object_ids)
 
 
-#---------------------------------------------------------------------------#
-# Counters Handler
-#---------------------------------------------------------------------------#
 class ModbusCountersHandler(object):
     """
     This is a helper class to simplify the properties for the counters::
@@ -444,9 +439,8 @@ class ModbusCountersHandler(object):
             count <<= 1
         return result
 
-    #-------------------------------------------------------------------------#
-    # Properties
-    #-------------------------------------------------------------------------#
+    # region Properties
+
     BusMessage = dict_property(lambda s: s.__data, 0)
     BusCommunicationError = dict_property(lambda s: s.__data, 1)
     BusExceptionError = dict_property(lambda s: s.__data, 2)
@@ -457,10 +451,11 @@ class ModbusCountersHandler(object):
     BusCharacterOverrun = dict_property(lambda s: s.__data, 7)
     Event = dict_property(lambda s: s.__data, 8)
 
+    # endregion
 
-#---------------------------------------------------------------------------#
-# Main server control block
-#---------------------------------------------------------------------------#
+    pass
+
+
 class ModbusControlBlock(Singleton):
     """
     This is a global singleton that controls all system information
@@ -479,9 +474,8 @@ class ModbusControlBlock(Singleton):
     __plus = ModbusPlusStatistics()
     __events = []
 
-    #-------------------------------------------------------------------------#
-    # Magic
-    #-------------------------------------------------------------------------#
+    # region Magic
+
     def __str__(self):
         """ Build a representation of the control block
 
@@ -496,9 +490,10 @@ class ModbusControlBlock(Singleton):
         """
         return self.__counters.__iter__()
 
-    #-------------------------------------------------------------------------#
-    # Events
-    #-------------------------------------------------------------------------#
+    # endregion
+
+    # region Events
+
     def add_event(self, event):
         """ Adds a new event to the event log
 
@@ -521,9 +516,10 @@ class ModbusControlBlock(Singleton):
         """
         self.__events = []
 
-    #-------------------------------------------------------------------------#
-    # Other Properties
-    #-------------------------------------------------------------------------#
+    # endregion
+
+    # region Other Properties
+
     Identity = property(lambda self: self.__identity)
     Counter = property(lambda self: self.__counters)
     Events = property(lambda self: self.__events)
@@ -537,9 +533,10 @@ class ModbusControlBlock(Singleton):
         self.__counters.reset()
         self.__diagnostic = [False] * 16
 
-    #-------------------------------------------------------------------------#
-    # Listen Properties
-    #-------------------------------------------------------------------------#
+    # endregion
+
+    # region Listen Properties
+
     def _set_listen_only(self, value):
         """ This toggles the listen only status
 
@@ -549,9 +546,10 @@ class ModbusControlBlock(Singleton):
 
     ListenOnly = property(lambda self: self.__listen_only, _set_listen_only)
 
-    #-------------------------------------------------------------------------#
-    # Mode Properties
-    #-------------------------------------------------------------------------#
+    # endregion
+
+    # region Mode Properties
+
     def _set_mode(self, mode):
         """ This toggles the current serial mode
 
@@ -562,9 +560,10 @@ class ModbusControlBlock(Singleton):
 
     Mode = property(lambda self: self.__mode, _set_mode)
 
-    #-------------------------------------------------------------------------#
-    # Delimiter Properties
-    #-------------------------------------------------------------------------#
+    # endregion
+
+    # region Delimiter Properties
+
     def _set_delimiter(self, char):
         """ This changes the serial delimiter character
 
@@ -579,9 +578,10 @@ class ModbusControlBlock(Singleton):
 
     Delimiter = property(lambda self: self.__delimiter, _set_delimiter)
 
-    #-------------------------------------------------------------------------#
-    # Diagnostic Properties
-    #-------------------------------------------------------------------------#
+    # endregion
+
+    # region Diagnostic Properties
+
     def set_diagnostic(self, mapping):
         """ This sets the value in the diagnostic register
 
@@ -608,9 +608,12 @@ class ModbusControlBlock(Singleton):
         """
         return self.__diagnostic
 
-#---------------------------------------------------------------------------#
+    # endregion
+
+    pass
+
+
 # Exported Identifiers
-#---------------------------------------------------------------------------#
 __all__ = [
     'ModbusAccessControl',
     'ModbusPlusStatistics',

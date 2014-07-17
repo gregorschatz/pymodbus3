@@ -69,7 +69,9 @@ class WriteSingleRegisterRequest(ModbusRequest):
 
         :returns: A string representation of the instance
         """
-        return 'WriteRegisterRequest {0} => {1}'.format(self.address, self.value)
+        return 'WriteRegisterRequest {0} => {1}'.format(
+            self.address, self.value
+        )
 
 
 class WriteSingleRegisterResponse(ModbusResponse):
@@ -109,12 +111,11 @@ class WriteSingleRegisterResponse(ModbusResponse):
 
         :returns: A string representation of the instance
         """
-        return 'WriteRegisterResponse {0} => {1}'.format(self.address, self.value)
+        return 'WriteRegisterResponse {0} => {1}'.format(
+            self.address, self.value
+        )
 
 
-#---------------------------------------------------------------------------#
-# Write Multiple Registers
-#---------------------------------------------------------------------------#
 class WriteMultipleRegistersRequest(ModbusRequest):
     """
     This function code is used to write a block of contiguous registers (1
@@ -150,7 +151,7 @@ class WriteMultipleRegistersRequest(ModbusRequest):
         packet = struct.pack('>HHB', self.address, self.count, self.byte_count)
         if self.skip_encode:
             return packet + b''.join(self.values)
-        
+
         for value in self.values:
             packet += struct.pack('>H', value)
 
@@ -161,7 +162,8 @@ class WriteMultipleRegistersRequest(ModbusRequest):
 
         :param data: The request to decode
         """
-        self.address, self.count, self.byte_count = struct.unpack('>HHB', data[:5])
+        self.address, self.count, self.byte_count =\
+            struct.unpack('>HHB', data[:5])
         self.values = []  # reset
         for idx in range(5, (self.count * 2) + 5, 2):
             self.values.append(struct.unpack('>H', data[idx:idx + 2])[0])
@@ -187,7 +189,9 @@ class WriteMultipleRegistersRequest(ModbusRequest):
 
         :returns: A string representation of the instance
         """
-        return 'WriteMultipleRegisterRequest {0} => {1}'.format(self.address, self.count)
+        return 'WriteMultipleRegisterRequest {0} => {1}'.format(
+            self.address, self.count
+        )
 
 
 class WriteMultipleRegistersResponse(ModbusResponse):
@@ -227,11 +231,12 @@ class WriteMultipleRegistersResponse(ModbusResponse):
 
         :returns: A string representation of the instance
         """
-        return 'WriteMultipleRegisterResponse ({0},{1})'.format(self.address, self.count)
+        return 'WriteMultipleRegisterResponse ({0},{1})'.format(
+            self.address, self.count
+        )
 
-#---------------------------------------------------------------------------#
+
 # Exported symbols
-#---------------------------------------------------------------------------#
 __all__ = [
     'WriteSingleRegisterRequest',
     'WriteSingleRegisterResponse',
