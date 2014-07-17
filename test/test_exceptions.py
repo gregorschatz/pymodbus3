@@ -13,7 +13,6 @@ class SimpleExceptionsTest(unittest.TestCase):
             ModbusException("bad base"),
             ModbusIOException("bad register"),
             ParameterException("bad parameter"),
-            NotImplementedError("bad function"),
             ConnectionException("bad connection"),
         ]
 
