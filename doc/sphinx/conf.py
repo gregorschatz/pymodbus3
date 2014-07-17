@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# PyModbus documentation build configuration file, created by
+# PyModbus3 documentation build configuration file, created by
 # sphinx-quickstart on Tue Apr 14 19:11:16 2009.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -37,8 +37,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Pymodbus'
-copyright = u'2009, Galen Collins'
+project = 'Pymodbus3'
+copyright = '2014, Galen Collins & Maxim Grischuk'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -162,7 +162,7 @@ html_static_path = ['static']
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Pymodbus'
+htmlhelp_basename = 'Pymodbus3'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -175,10 +175,10 @@ htmlhelp_basename = 'Pymodbus'
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
-latex_documents = [
-  ('index', 'Pymodbus.tex', ur'Pymodbus Documentation',
-   ur'Galen Collins', 'manual'),
-]
+latex_documents = [(
+    'index', 'Pymodbus3.tex', 'Pymodbus3 Documentation',
+    'Galen Collins & Maxim Grischuk', 'manual',
+)]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.

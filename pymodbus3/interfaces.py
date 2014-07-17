@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Pymodbus Interfaces
+Pymodbus3 Interfaces
 ---------------------
 
 A collection of base classes that are used throughout

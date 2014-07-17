@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Pymodbus Exceptions
+Pymodbus3 Exceptions
 --------------------
 
 Custom exceptions to be used in the Modbus code.

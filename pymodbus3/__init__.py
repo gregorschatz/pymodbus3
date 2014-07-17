@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Pymodbus: Modbus Protocol Implementation
+Pymodbus3: Modbus Protocol Implementation
 -----------------------------------------
 
 TwistedModbus is built on top of the code developed by:

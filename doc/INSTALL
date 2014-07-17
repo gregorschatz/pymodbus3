@@ -1,14 +1,14 @@
 Requirements
 -------------
 
-* Python 2.3 or later.
+* Python 3.0 or later.
 * Python Twisted
 * Pyserial
 
 On Windows pywin32 is recommended (this is built in to ActivePython,
 so no need to reinstall if you use it instead of standard Python):
 
-    http://sourceforge.net/project/showfiles.php?group_id=78018
+    http://sourceforge.net/projects/pywin32/files/
 
 The Windows IOCP reactor requires pywin32 build 205 or later.
 
@@ -18,8 +18,8 @@ Installation
 
 To install the package from pypi, use either easy_install or pip::
 
-    pip install  -U pymodbus
-    easy_install -U pymodbus
+    pip install  -U pymodbus3
+    easy_install -U pymodbus3
 
 As with other Python packages, the standard way of installing from source
 is (as root or administrator)::
@@ -65,7 +65,6 @@ Quality Tests
 There are a number of quality tests that can be run against the code base
 aside from unit tests::
 
-    python setup.py scan_2to3  # run a python3 compatability test
     python setup.py pep8       # run a pop8 standards test
     python setup.py lint       # run a lint test
 
