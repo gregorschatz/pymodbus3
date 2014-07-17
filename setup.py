@@ -1,5 +1,5 @@
 """
-Installs pymodbus using distutils
+Installs pymodbus3 using distutils
 
 Run:
     python setup.py install
@@ -34,7 +34,7 @@ def main():
         author_email='bashwork@gmail.com',
         maintainer=__author__,
         maintainer_email=__author_email__,
-        url='https://github.com/uzumaxy/pymodbus3',
+        url='http://uzumaxy.github.io/pymodbus3/',
         license='BSD',
         packages=['pymodbus3'],
         exclude_package_data={'': ['examples', 'test', 'tools', 'doc']},

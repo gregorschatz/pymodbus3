@@ -46,7 +46,7 @@ class DeepCleanCommand(Command):
     def initialize_options(self):
         """ options setup """
         self.trash = [
-            'build', 'dist', 'pymodbus.egg-info',
+            'build', 'dist', 'pymodbus3.egg-info',
             os.path.join(os.path.join('doc', 'sphinx'), 'build'),
         ]
 
@@ -98,7 +98,7 @@ class LintCommand(Command):
     def __try_pyflakes(self):
         try:
             from pyflakes.scripts.pyflakes import main
-            sys.argv = '''pyflakes pymodbus'''.split()
+            sys.argv = '''pyflakes pymodbus3'''.split()
             main()
             return True
         except:
@@ -107,7 +107,7 @@ class LintCommand(Command):
     def __try_pychecker(self):
         try:
             import pychecker
-            sys.argv = '''pychecker pymodbus/*.py'''.split()
+            sys.argv = '''pychecker pymodbus3/*.py'''.split()
             main()
             return True
         except:
@@ -116,7 +116,7 @@ class LintCommand(Command):
     def __try_pylint(self):
         try:
             import pylint
-            sys.argv = '''pylint pymodbus/*.py'''.split()
+            sys.argv = '''pylint pymodbus3/*.py'''.split()
             main()
             return True
         except:
@@ -133,7 +133,7 @@ class Pep8Command(Command):
         """ options setup """
         if not os.path.exists('./build'):
             os.mkdir('./build')
-        self.directories = ['pymodbus']
+        self.directories = ['pymodbus3']
 
     def finalize_options(self):
         pass
