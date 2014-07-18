@@ -226,7 +226,7 @@ class ModbusUdpClient(BaseModbusClient):
         :returns: AF_INET for ipv4 and AF_INET6 for ipv6
         """
         try:
-            _ = socket.inet_pton(socket.AF_INET6, address)
+            socket.inet_pton(socket.AF_INET6, address)
         except socket.error:  # not a valid ipv6 address
             return socket.AF_INET
         return socket.AF_INET6

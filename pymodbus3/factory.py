@@ -18,14 +18,14 @@ from pymodbus3.pdu import ExceptionResponse
 from pymodbus3.pdu import ModbusExceptions
 from pymodbus3.interfaces import IModbusDecoder
 from pymodbus3.exceptions import ModbusException
-from pymodbus3.bit_read_message import *
-from pymodbus3.bit_write_message import *
-from pymodbus3.diag_message import *
-from pymodbus3.file_message import *
-from pymodbus3.other_message import *
-from pymodbus3.mei_message import *
-from pymodbus3.register_read_message import *
-from pymodbus3.register_write_message import *
+import pymodbus3.bit_read_message as bit_read_msg
+import pymodbus3.bit_write_message as bit_write_msg
+import pymodbus3.diag_message as diag_msg
+import pymodbus3.file_message as file_msg
+import pymodbus3.other_message as other_msg
+import pymodbus3.mei_message as mei_msg
+import pymodbus3.register_read_message as reg_read_msg
+import pymodbus3.register_write_message as reg_write_msg
 
 # Logging
 import logging
@@ -38,50 +38,50 @@ class ServerDecoder(IModbusDecoder):
     To add more implemented functions, simply add them to the list
     """
     __function_table = [
-        ReadHoldingRegistersRequest,
-        ReadDiscreteInputsRequest,
-        ReadInputRegistersRequest,
-        ReadCoilsRequest,
-        WriteMultipleCoilsRequest,
-        WriteMultipleRegistersRequest,
-        WriteSingleRegisterRequest,
-        WriteSingleCoilRequest,
-        ReadWriteMultipleRegistersRequest,
+        reg_read_msg.ReadHoldingRegistersRequest,
+        bit_read_msg.ReadDiscreteInputsRequest,
+        reg_read_msg.ReadInputRegistersRequest,
+        bit_read_msg.ReadCoilsRequest,
+        bit_write_msg.WriteMultipleCoilsRequest,
+        reg_write_msg.WriteMultipleRegistersRequest,
+        reg_write_msg.WriteSingleRegisterRequest,
+        bit_write_msg.WriteSingleCoilRequest,
+        reg_read_msg.ReadWriteMultipleRegistersRequest,
 
-        DiagnosticStatusRequest,
+        diag_msg.DiagnosticStatusRequest,
 
-        ReadExceptionStatusRequest,
-        GetCommEventCounterRequest,
-        GetCommEventLogRequest,
-        ReportSlaveIdRequest,
+        other_msg.ReadExceptionStatusRequest,
+        other_msg.GetCommEventCounterRequest,
+        other_msg.GetCommEventLogRequest,
+        other_msg.ReportSlaveIdRequest,
 
-        ReadFileRecordRequest,
-        WriteFileRecordRequest,
-        MaskWriteRegisterRequest,
-        ReadFifoQueueRequest,
+        file_msg.ReadFileRecordRequest,
+        file_msg.WriteFileRecordRequest,
+        file_msg.MaskWriteRegisterRequest,
+        file_msg.ReadFifoQueueRequest,
 
-        ReadDeviceInformationRequest,
+        mei_msg.ReadDeviceInformationRequest,
     ]
     __sub_function_table = [
-        ReturnQueryDataRequest,
-        RestartCommunicationsOptionRequest,
-        ReturnDiagnosticRegisterRequest,
-        ChangeAsciiInputDelimiterRequest,
-        ForceListenOnlyModeRequest,
-        ClearCountersRequest,
-        ReturnBusMessageCountRequest,
-        ReturnBusCommunicationErrorCountRequest,
-        ReturnBusExceptionErrorCountRequest,
-        ReturnSlaveMessageCountRequest,
-        ReturnSlaveNoResponseCountRequest,
-        ReturnSlaveNAKCountRequest,
-        ReturnSlaveBusyCountRequest,
-        ReturnSlaveBusCharacterOverrunCountRequest,
-        ReturnIopOverrunCountRequest,
-        ClearOverrunCountRequest,
-        GetClearModbusPlusRequest,
+        diag_msg.ReturnQueryDataRequest,
+        diag_msg.RestartCommunicationsOptionRequest,
+        diag_msg.ReturnDiagnosticRegisterRequest,
+        diag_msg.ChangeAsciiInputDelimiterRequest,
+        diag_msg.ForceListenOnlyModeRequest,
+        diag_msg.ClearCountersRequest,
+        diag_msg.ReturnBusMessageCountRequest,
+        diag_msg.ReturnBusCommunicationErrorCountRequest,
+        diag_msg.ReturnBusExceptionErrorCountRequest,
+        diag_msg.ReturnSlaveMessageCountRequest,
+        diag_msg.ReturnSlaveNoResponseCountRequest,
+        diag_msg.ReturnSlaveNAKCountRequest,
+        diag_msg.ReturnSlaveBusyCountRequest,
+        diag_msg.ReturnSlaveBusCharacterOverrunCountRequest,
+        diag_msg.ReturnIopOverrunCountRequest,
+        diag_msg.ClearOverrunCountRequest,
+        diag_msg.GetClearModbusPlusRequest,
 
-        ReadDeviceInformationRequest,
+        mei_msg.ReadDeviceInformationRequest,
     ]
 
     def __init__(self):
@@ -146,49 +146,49 @@ class ClientDecoder(IModbusDecoder):
     To add more implemented functions, simply add them to the list
     """
     __function_table = [
-        ReadHoldingRegistersResponse,
-        ReadDiscreteInputsResponse,
-        ReadInputRegistersResponse,
-        ReadCoilsResponse,
-        WriteMultipleCoilsResponse,
-        WriteMultipleRegistersResponse,
-        WriteSingleRegisterResponse,
-        WriteSingleCoilResponse,
-        ReadWriteMultipleRegistersResponse,
+        reg_read_msg.ReadHoldingRegistersResponse,
+        bit_read_msg.ReadDiscreteInputsResponse,
+        reg_read_msg.ReadInputRegistersResponse,
+        bit_read_msg.ReadCoilsResponse,
+        bit_write_msg.WriteMultipleCoilsResponse,
+        reg_write_msg.WriteMultipleRegistersResponse,
+        reg_write_msg.WriteSingleRegisterResponse,
+        bit_write_msg.WriteSingleCoilResponse,
+        reg_read_msg.ReadWriteMultipleRegistersResponse,
 
-        DiagnosticStatusResponse,
+        diag_msg.DiagnosticStatusResponse,
 
-        ReadExceptionStatusResponse,
-        GetCommEventCounterResponse,
-        GetCommEventLogResponse,
-        ReportSlaveIdResponse,
+        other_msg.ReadExceptionStatusResponse,
+        other_msg.GetCommEventCounterResponse,
+        other_msg.GetCommEventLogResponse,
+        other_msg.ReportSlaveIdResponse,
 
-        ReadFileRecordResponse,
-        WriteFileRecordResponse,
-        MaskWriteRegisterResponse,
-        ReadFifoQueueResponse,
+        file_msg.ReadFileRecordResponse,
+        file_msg.WriteFileRecordResponse,
+        file_msg.MaskWriteRegisterResponse,
+        file_msg.ReadFifoQueueResponse,
 
-        ReadDeviceInformationResponse,
+        mei_msg.ReadDeviceInformationResponse,
     ]
     __sub_function_table = [
-        ReturnQueryDataResponse,
-        RestartCommunicationsOptionResponse,
-        ReturnDiagnosticRegisterResponse,
-        ChangeAsciiInputDelimiterResponse,
-        ForceListenOnlyModeResponse,
-        ClearCountersResponse,
-        ReturnBusMessageCountResponse,
-        ReturnBusCommunicationErrorCountResponse,
-        ReturnBusExceptionErrorCountResponse,
-        ReturnSlaveMessageCountResponse,
-        ReturnSlaveNoResponseCountResponse,
-        ReturnSlaveNAKCountResponse,
-        ReturnSlaveBusyCountResponse,
-        ReturnSlaveBusCharacterOverrunCountResponse,
-        ReturnIopOverrunCountResponse,
-        ClearOverrunCountResponse,
-        GetClearModbusPlusResponse,
-        ReadDeviceInformationResponse,
+        diag_msg.ReturnQueryDataResponse,
+        diag_msg.RestartCommunicationsOptionResponse,
+        diag_msg.ReturnDiagnosticRegisterResponse,
+        diag_msg.ChangeAsciiInputDelimiterResponse,
+        diag_msg.ForceListenOnlyModeResponse,
+        diag_msg.ClearCountersResponse,
+        diag_msg.ReturnBusMessageCountResponse,
+        diag_msg.ReturnBusCommunicationErrorCountResponse,
+        diag_msg.ReturnBusExceptionErrorCountResponse,
+        diag_msg.ReturnSlaveMessageCountResponse,
+        diag_msg.ReturnSlaveNoResponseCountResponse,
+        diag_msg.ReturnSlaveNAKCountResponse,
+        diag_msg.ReturnSlaveBusyCountResponse,
+        diag_msg.ReturnSlaveBusCharacterOverrunCountResponse,
+        diag_msg.ReturnIopOverrunCountResponse,
+        diag_msg.ClearOverrunCountResponse,
+        diag_msg.GetClearModbusPlusResponse,
+        mei_msg.ReadDeviceInformationResponse,
     ]
 
     def __init__(self):

@@ -13,7 +13,7 @@ from pymodbus3.factory import ServerDecoder
 from pymodbus3.datastore import ModbusServerContext
 from pymodbus3.device import ModbusControlBlock
 from pymodbus3.device import ModbusDeviceIdentification
-from pymodbus3.transaction import *
+from pymodbus3.transaction import ModbusSocketFramer, ModbusAsciiFramer
 from pymodbus3.pdu import ModbusExceptions
 import socketserver
 

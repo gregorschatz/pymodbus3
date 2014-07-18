@@ -39,6 +39,6 @@ class Version(object):
 
     @staticmethod
     def get_current_version():
-        version = Version('pymodbus3', 3, 0, 0)
+        version = Version('pymodbus3', 2, 0, 0)
         version.__name__ = 'pymodbus3'  # fix epydoc error
         return version
