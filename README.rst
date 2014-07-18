@@ -82,7 +82,7 @@ commands in a terminal window (make sure you have correct
 permissions or a virtualenv currently running)::
 
     easy_install -U pymodbus3
-    pip install  -U pymodbus3
+    pip install -U pymodbus3
 
 Otherwise you can pull the trunk source and install from there::
 
@@ -103,12 +103,7 @@ asynchronous versions uses twisted for its event loop.
 Current Work In Progress
 ------------------------------------------------------------
 
-Since I don't have access to any live modbus devices anymore
-it is a bit hard to test on live hardware. However, if you would
-like your device tested, I accept devices via mail or by IP address.
-
-That said, the current work mainly involves polishing the library as
-I get time doing such tasks as:
+Listing of immediate tasks:
 
   * Fixing bugs/feature requests
   * Architecture documentation

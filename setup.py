@@ -9,10 +9,6 @@ For information about setuptools
 http://peak.telecommunity.com/DevCenter/setuptools#new-and-changed-setup-keywords
 """
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
 import sys
 import os
 from setup_commands import command_classes
@@ -20,23 +16,31 @@ from pymodbus3 import __version__, __author__, __author_email__
 
 
 def main():
+    # Import setuptools or install if not exists
+    try:
+        import setuptools
+    except ImportError:
+        from ez_setup import use_setuptools
+        use_setuptools()
+    from setuptools import setup, find_packages
     # Check python version
     if sys.version_info < (3, 0, 0):
         sys.stderr.write('You need python 3.0 or later to run this script!' + os.linesep)
         exit(1)
+    # Start installation
     setup(
         name='pymodbus3',
         version=__version__,
         description='A fully featured modbus protocol stack in python',
         long_description=open('README.rst').read(),
-        keywords='modbus, twisted, scada',
+        keywords='modbus, twisted, scada, pymodbus',
         author=__author__,
-        author_email='bashwork@gmail.com',
+        author_email=__author_email__,
         maintainer=__author__,
         maintainer_email=__author_email__,
         url='http://uzumaxy.github.io/pymodbus3/',
         license='BSD',
-        packages=['pymodbus3'],
+        packages=find_packages(exclude=['examples', 'test']),
         exclude_package_data={'': ['examples', 'test', 'tools', 'doc']},
         platforms=['Linux', 'Mac OS X', 'Win'],
         include_package_data=True,
