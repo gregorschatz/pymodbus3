@@ -9,13 +9,17 @@ For information about setuptools
 http://peak.telecommunity.com/DevCenter/setuptools#new-and-changed-setup-keywords
 """
 
-import sys
-import os
-from setup_commands import command_classes
-from pymodbus3 import __version__, __author__, __author_email__
-
 
 def main():
+    # Common modules import
+    import sys
+    import os
+    from pymodbus3 import __version__, __author__, __author_email__
+    # Import command classes
+    try:
+        from setup_commands import command_classes
+    except ImportError:
+        command_classes = {}
     # Import setuptools or install if not exists
     try:
         import setuptools
@@ -42,6 +46,7 @@ def main():
         license='BSD',
         packages=find_packages(exclude=['examples', 'test']),
         exclude_package_data={'': ['examples', 'test', 'tools', 'doc']},
+        py_modules = ['ez_setup'],
         platforms=['Linux', 'Mac OS X', 'Win'],
         include_package_data=True,
         zip_safe=True,
