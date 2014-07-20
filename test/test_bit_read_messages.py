@@ -13,7 +13,7 @@ from pymodbus3.bit_read_message import *
 from pymodbus3.bit_read_message import ReadBitsRequestBase
 from pymodbus3.bit_read_message import ReadBitsResponseBase
 from pymodbus3.pdu import ModbusExceptions
-from .modbus_mocks import MockContext
+from modbus_mocks import MockContext
 
 #---------------------------------------------------------------------------#
 # Fixture
@@ -68,9 +68,9 @@ class ModbusBitMessageTests(unittest.TestCase):
         """ Test the extra methods on a ReadBitsResponseBase """
         input_val = [False] * 8
         handle = ReadBitsResponseBase(input_val)
-        for i in [1, 3, 5]:
+        for i in (1, 3, 5):
             handle.set_bit(i, True)
-        for i in [1, 3, 5]:
+        for i in (1, 3, 5):
             handle.reset_bit(i)
         for i in range(8):
             self.assertEqual(handle.get_bit(i), False)
@@ -78,8 +78,8 @@ class ModbusBitMessageTests(unittest.TestCase):
     def test_bit_read_base_requests(self):
         """ Test bit read request encoding """
         messages = {
-            ReadBitsRequestBase(12, 14): '\x00\x0c\x00\x0e',
-            ReadBitsResponseBase([1, 0, 1, 1, 0]): '\x01\x0d',
+            ReadBitsRequestBase(12, 14): b'\x00\x0c\x00\x0e',
+            ReadBitsResponseBase([1, 0, 1, 1, 0]): b'\x01\x0d',
         }
         for request, expected in messages.items():
             self.assertEqual(request.encode(), expected)

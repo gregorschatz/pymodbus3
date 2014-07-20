@@ -24,6 +24,9 @@ class MockContext(IModbusSlaveContext):
     def set_values(self, fx, address, count):
         pass
 
+    def reset(self):
+        pass
+
 
 class FakeList(object):
     """ todo, replace with magic mock """
