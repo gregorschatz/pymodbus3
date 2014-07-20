@@ -5,16 +5,8 @@ from pymodbus3.bit_write_message import *
 from pymodbus3.register_read_message import *
 from pymodbus3.register_write_message import *
 
-#---------------------------------------------------------------------------#
-# Fixture
-#---------------------------------------------------------------------------#
-
 
 class ModbusAllMessagesTests(unittest.TestCase):
-
-    #-----------------------------------------------------------------------#
-    # Setup/TearDown
-    #-----------------------------------------------------------------------#
 
     def setUp(self):
         """
@@ -32,7 +24,9 @@ class ModbusAllMessagesTests(unittest.TestCase):
             lambda unit: WriteMultipleCoilsRequest(1, [1], unit=unit),
             lambda unit: ReadHoldingRegistersRequest(1, 5, unit=unit),
             lambda unit: ReadInputRegistersRequest(1, 5, unit=unit),
-            lambda unit: ReadWriteMultipleRegistersRequest(unit=unit, **arguments),
+            lambda unit: ReadWriteMultipleRegistersRequest(
+                unit=unit, **arguments
+            ),
             lambda unit: WriteSingleRegisterRequest(1, 1, unit=unit),
             lambda unit: WriteMultipleRegistersRequest(1, [1], unit=unit),
         ]
@@ -68,7 +62,9 @@ class ModbusAllMessagesTests(unittest.TestCase):
 
     def test_forwarding_kwargs_to_pdu(self):
         """ Test that the kwargs are forwarded to the pdu correctly """
-        request = ReadCoilsRequest(1, 5, unit=0x12, transaction=0x12, protocol=0x12)
+        request = ReadCoilsRequest(
+            1, 5, unit=0x12, transaction=0x12, protocol=0x12
+        )
         self.assertEqual(request.unit_id, 0x12)
         self.assertEqual(request.transaction_id, 0x12)
         self.assertEqual(request.protocol_id, 0x12)
