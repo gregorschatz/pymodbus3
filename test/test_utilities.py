@@ -29,7 +29,7 @@ class SimpleUtilityTest(unittest.TestCase):
     def setUp(self):
         """ Initializes the test environment """
         self.data = struct.pack('>HHHH', 0x1234, 0x2345, 0x3456, 0x4567)
-        self.string = "test the computation"
+        self.string = b"test the computation"
         self.bits = [True, False, True, False, True, False, True, False]
 
     def tearDown(self):
@@ -82,8 +82,7 @@ class SimpleUtilityTest(unittest.TestCase):
         self.assertTrue(check_crc(self.data, 0xe2db))
         self.assertTrue(check_crc(self.string, 0x889e))
 
-#---------------------------------------------------------------------------#
+
 # Main
-#---------------------------------------------------------------------------#
 if __name__ == "__main__":
     unittest.main()
