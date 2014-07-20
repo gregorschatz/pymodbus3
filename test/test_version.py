@@ -20,8 +20,7 @@ class ModbusVersionTest(unittest.TestCase):
         self.assertEqual(version.short(), '1.2.3')
         self.assertEqual(str(version), '[test, version 1.2.3]')
 
-#---------------------------------------------------------------------------#
+
 # Main
-#---------------------------------------------------------------------------#
 if __name__ == "__main__":
     unittest.main()
