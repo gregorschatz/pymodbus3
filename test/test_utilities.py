@@ -23,7 +23,7 @@ class DictPropertyTester(object):
 
 class SimpleUtilityTest(unittest.TestCase):
     """
-    This is the unittest for the pymod.utilities module
+    This is the unittest for the pymodbus3.utilities module
     """
 
     def setUp(self):
@@ -69,8 +69,8 @@ class SimpleUtilityTest(unittest.TestCase):
 
     def test_bit_packing(self):
         """ Test all string <=> bit packing functions """
-        self.assertEqual(unpack_bitstring('\x55'), self.bits)
-        self.assertEqual(pack_bitstring(self.bits), '\x55')
+        self.assertEqual(unpack_bitstring(b'\x55'), self.bits)
+        self.assertEqual(pack_bitstring(self.bits), b'\x55')
 
     def test_longitudinal_redundancy_check(self):
         """ Test the longitudinal redundancy check code """
