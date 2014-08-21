@@ -1,19 +1,19 @@
-============================================================
+=======
 Summary
-============================================================
+=======
 
 Pymodbus is a full Modbus protocol implementation using twisted for its
 asynchronous communications core. It can also be used without any third
 party dependencies (aside from pyserial) if a more lightweight project is
 needed.
 
-============================================================
+========
 Features
-============================================================
+========
 
-------------------------------------------------------------
+---------------
 Client Features
-------------------------------------------------------------
+---------------
 
   * Full read/write protocol on discrete and register
   * Most of the extended protocol (diagnostic/file/pipe/setting/information)
@@ -21,9 +21,9 @@ Client Features
   * asynchronous(powered by twisted) and synchronous versions
   * Payload builder/decoder utilities
 
-------------------------------------------------------------
+---------------
 Server Features
-------------------------------------------------------------
+---------------
 
   * Can function as a fully implemented modbus server
   * TCP, UDP, Serial ASCII, Serial RTU, and Serial Binary
@@ -31,9 +31,9 @@ Server Features
   * Full server control context (device information, counters, etc)
   * A number of backing contexts (database, redis, a slave device)
 
-============================================================
+=========
 Use Cases
-============================================================
+=========
 
 Although most system administrators will find little need for a Modbus
 server on any modern hardware, they may find the need to query devices on
@@ -47,12 +47,13 @@ getting access to that many is unwieldy at best. The pymodbus3 server will allow
 a user to test as many devices as their base operating system will allow (*allow*
 in this case means how many Virtual IP addresses are allowed).
 
-For more information please browse the project documentation:
-http://readthedocs.org/docs/pymodbus3/en/latest/index.html
+For more information please browse the
+`project documentation <http://readthedocs.org/docs/pymodbus3/en/latest/index.html>`_.
 
-------------------------------------------------------------
+
+------------
 Example Code
-------------------------------------------------------------
+------------
 
 For those of you that just want to get started fast, here you go::
 
@@ -70,12 +71,13 @@ need, feel free to submit them so others can benefit.
 
 Also, if you have questions, please ask them on the mailing list
 so that others can benefit from the results and so that I can
-trace them. Also you can write to issue tracker:
-https://github.com/uzumaxy/pymodbus3/issues
+trace them. Also you can write to
+`issue tracker <https://github.com/uzumaxy/pymodbus3/issues>`_.
 
-------------------------------------------------------------
+
+----------
 Installing
-------------------------------------------------------------
+----------
 
 You can install using pip or easy install by issuing the following
 commands in a terminal window (make sure you have correct
@@ -99,9 +101,9 @@ out all mentions of twisted.  It should be noted that without twisted,
 one will only be able to run the synchronized version as the
 asynchronous versions uses twisted for its event loop.
 
-------------------------------------------------------------
+------------------------
 Current Work In Progress
-------------------------------------------------------------
+------------------------
 
 Listing of immediate tasks:
 
@@ -110,9 +112,9 @@ Listing of immediate tasks:
   * Functional testing against any reference I can find
   * The remaining edges of the protocol (that I think no one uses)
    
-------------------------------------------------------------
+-------------------
 License Information
-------------------------------------------------------------
+-------------------
 
 Pymodbus is built on top of code developed from/by:
   * Copyright (c) 2001-2005 S.W.A.C. GmbH, Germany.
