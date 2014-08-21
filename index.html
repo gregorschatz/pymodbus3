@@ -4,9 +4,9 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
     <title>Pymodbus3 by uzumaxy</title>
   </head>
@@ -16,7 +16,7 @@
     <header>
       <div class="container">
         <h1>Pymodbus3</h1>
-        <h2>A full modbus protocol written in python</h2>
+        <h2>A full Modbus protocol written in Python 3.</h2>
 
         <section id="downloads">
           <a href="https://github.com/uzumaxy/pymodbus3/zipball/master" class="btn">Download as .zip</a>
@@ -28,9 +28,7 @@
 
     <div class="container">
       <section id="main_content">
-        <h1></h1>
-
-<h1>
+        <h1>
 <a name="summary" class="anchor" href="#summary"><span class="octicon octicon-link"></span></a>Summary</h1>
 
 <p>Pymodbus is a full Modbus protocol implementation using twisted for its
@@ -38,32 +36,28 @@ asynchronous communications core. It can also be used without any third
 party dependencies (aside from pyserial) if a more lightweight project is
 needed.</p>
 
-<h1></h1>
-
 <h1>
 <a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h1>
 
-<hr><h2>
+<h2>
 <a name="client-features" class="anchor" href="#client-features"><span class="octicon octicon-link"></span></a>Client Features</h2>
 
 <ul>
 <li>Full read/write protocol on discrete and register</li>
 <li>Most of the extended protocol (diagnostic/file/pipe/setting/information)</li>
 <li>TCP, UDP, Serial ASCII, Serial RTU, and Serial Binary</li>
-<li>asynchronous(powered by twisted) and synchronous versions</li>
+<li>Asynchronous(powered by twisted) and synchronous versions</li>
 <li>Payload builder/decoder utilities</li>
-</ul><hr><h2>
+</ul><h2>
 <a name="server-features" class="anchor" href="#server-features"><span class="octicon octicon-link"></span></a>Server Features</h2>
 
 <ul>
 <li>Can function as a fully implemented modbus server</li>
 <li>TCP, UDP, Serial ASCII, Serial RTU, and Serial Binary</li>
-<li>asynchronous(powered by twisted) and synchronous versions</li>
+<li>Asynchronous (powered by twisted) and synchronous versions</li>
 <li>Full server control context (device information, counters, etc)</li>
 <li>A number of backing contexts (database, redis, a slave device)</li>
-</ul><h1></h1>
-
-<h1>
+</ul><h1>
 <a name="use-cases" class="anchor" href="#use-cases"><span class="octicon octicon-link"></span></a>Use Cases</h1>
 
 <p>Although most system administrators will find little need for a Modbus
@@ -78,13 +72,13 @@ getting access to that many is unwieldy at best. The pymodbus3 server will allow
 a user to test as many devices as their base operating system will allow (<em>allow</em>
 in this case means how many Virtual IP addresses are allowed).</p>
 
-<p>For more information please browse the project documentation:
-<a href="http://readthedocs.org/docs/pymodbus3/en/latest/index.html">http://readthedocs.org/docs/pymodbus3/en/latest/index.html</a></p>
+<p>For more information please browse the
+<a href="http://readthedocs.org/docs/pymodbus3/en/latest/index.html">project documentation</a>.</p>
 
-<hr><h2>
-<a name="example-code" class="anchor" href="#example-code"><span class="octicon octicon-link"></span></a>Example Code</h2>
+<h1>
+<a name="example-code" class="anchor" href="#example-code"><span class="octicon octicon-link"></span></a>Example Code</h1>
 
-<p>For those of you that just want to get started fast, here you go::</p>
+<p>For those of you that just want to get started fast, here you go:</p>
 
 <pre><code>from pymodbus3.client.sync import ModbusTcpClient
 
@@ -101,21 +95,21 @@ need, feel free to submit them so others can benefit.</p>
 
 <p>Also, if you have questions, please ask them on the mailing list
 so that others can benefit from the results and so that I can
-trace them. Also you can write to issue tracker:
-<a href="https://github.com/uzumaxy/pymodbus3/issues">https://github.com/uzumaxy/pymodbus3/issues</a></p>
+trace them. Also you can write to 
+<a href="https://github.com/uzumaxy/pymodbus3/issues">issue tracker</a>.</p>
 
-<hr><h2>
-<a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h2>
+<h1>
+<a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h1>
 
 <p>You can install using pip or easy install by issuing the following
 commands in a terminal window (make sure you have correct
-permissions or a virtualenv currently running)::</p>
+permissions or a virtualenv currently running):</p>
 
 <pre><code>easy_install -U pymodbus3
 pip install -U pymodbus3
 </code></pre>
 
-<p>Otherwise you can pull the trunk source and install from there::</p>
+<p>Otherwise you can pull the trunk source and install from there:</p>
 
 <pre><code>git clone https://github.com/uzumaxy/pymodbus3.git
 cd pymodbus3
@@ -126,13 +120,13 @@ python setup.py install
 (at their appropriate versions) for your current python distribution.</p>
 
 <p>If you would like to install pymodbus3 without the twisted dependency,
-simply edit the setup.py file before running easy_install and comment
+simply edit the <code>setup.py</code> file before running easy_install and comment
 out all mentions of twisted.  It should be noted that without twisted,
 one will only be able to run the synchronized version as the
 asynchronous versions uses twisted for its event loop.</p>
 
-<hr><h2>
-<a name="current-work-in-progress" class="anchor" href="#current-work-in-progress"><span class="octicon octicon-link"></span></a>Current Work In Progress</h2>
+<h1>
+<a name="current-work-in-progress" class="anchor" href="#current-work-in-progress"><span class="octicon octicon-link"></span></a>Current Work In Progress</h1>
 
 <p>Listing of immediate tasks:</p>
 
@@ -141,8 +135,8 @@ asynchronous versions uses twisted for its event loop.</p>
 <li>Architecture documentation</li>
 <li>Functional testing against any reference I can find</li>
 <li>The remaining edges of the protocol (that I think no one uses)</li>
-</ul><hr><h2>
-<a name="license-information" class="anchor" href="#license-information"><span class="octicon octicon-link"></span></a>License Information</h2>
+</ul><h1>
+<a name="license-information" class="anchor" href="#license-information"><span class="octicon octicon-link"></span></a>License Information</h1>
 
 <p>Pymodbus is built on top of code developed from/by:</p>
 
