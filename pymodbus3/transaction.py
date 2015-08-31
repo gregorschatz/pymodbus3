@@ -109,7 +109,12 @@ class ModbusTransactionManager(object):
             # we know how much to read for the fixed size
             # header, so we loop until we have it to guide us.
             elif self.state == FramerState.ReadingHeader:
-                size = self.framer.header_size - len(self.framer.buffer)
+                # size = self.framer.header_size - len(self.framer.buffer)
+                # framing on not yet received stream data does not work.
+                # RTU header_size is 1 (1Byte of ADU for UnitID/SlaveID/Modbus Address)
+                # But need FunctionCode (1Byte) and Byte Count Byte to calculate length of Content Part
+                # [header_size xByte ... unitId/Addr 1Byte][FunctionCode 1Byte][Count 1Byte]
+                size = self.framer.header_size + 2 - len(self.framer.buffer)
                 if size != 0:
                     result = self.client.receive(size)  # off by one on clear
                     if not result:
