@@ -136,6 +136,9 @@ class ModbusTransactionManager(object):
                             self.state = FramerState.ErrorInFrame
                     self.framer.add_to_frame(result)
                     size -= len(result)
+                if size == 0:
+                    self.framer.check_frame()
+                    size = self.framer.get_frame_size() - len(self.framer.buffer)
                 if size <= 0:
                     self.state = FramerState.CompleteFrame
 
