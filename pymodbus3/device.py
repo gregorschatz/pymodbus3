@@ -218,7 +218,7 @@ class ModbusDeviceIdentification(object):
 
         :returns: An iterator of the device information
         """
-        return self.__data.items()
+        return iter(self.__data.items())
 
     def summary(self):
         """ Return a summary of the main items
