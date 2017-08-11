@@ -379,7 +379,7 @@ class ModbusSerialServer(object):
         """
         request = self.socket
         request.send = request.write
-        request.receive = request.read
+        request.recv = request.read
         handler = ModbusSingleRequestHandler(
             request, (self.device, self.device), self
         )
