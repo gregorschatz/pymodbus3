@@ -145,7 +145,10 @@ class ModbusTransactionManager(object):
                     self.framer.check_frame()
                     size = self.framer.get_frame_size() - len(self.framer.buffer)
                 if size <= 0:
-                    self.state = FramerState.CompleteFrame
+                    if self.framer.check_frame():
+                        self.state = FramerState.CompleteFrame
+                    else:
+                        self.state = FramerState.ErrorInFrame
 
             # if we get a complete frame, we simply pass it on to
             # the application code to process. In this case, we
@@ -573,7 +576,10 @@ class ModbusRtuFramer(IModbusFramer):
         self.header['uid'] = self.buffer[0]
         func_code = self.buffer[1]
         pdu_class = self.decoder.lookup_pdu_class(func_code)
-        size = pdu_class.calculate_rtu_frame_size(self.buffer)
+        try:
+            size = pdu_class.calculate_rtu_frame_size(self.buffer)
+        except: # Bad for debugging - good for production stability
+            size = len(self.buffer) # fallback for cleanup
         self.header['len'] = size
         self.header['crc'] = self.buffer[size - 2:size]
 

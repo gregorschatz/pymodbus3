@@ -101,9 +101,13 @@ class ReadDeviceInformationResponse(ModbusResponse):
         :returns: The number of bytes in the response.
         """
         size = 8  # skip the header information
+        if len(data) <= 7:
+            return size + 2
         count = data[7]
 
         while count > 0:
+            if len(data) < size + 2:
+                return size + 2
             _, object_length = struct.unpack('>BB', data[size:size+2])
             size += object_length + 2
             count -= 1
