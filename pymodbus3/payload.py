@@ -57,6 +57,25 @@ class BinaryPayloadBuilder(IPayloadBuilder):
         """
         self._payload = []
 
+    def to_registers(self): # broken function that was added by Stysia
+        ''' Convert the payload buffer into a register
+        layout that can be used as a context block.
+
+        :returns: The register layout to use as a block
+        '''
+        fstring = self._endian + 'H'
+        payload = self.build()
+        return [unpack(fstring, value)[0] for value in payload]
+
+    # def to_coils(self):
+    #     ''' Convert the payload buffer into a coils
+    #     layout that can be used as a context block.
+
+    #     :returns: The coils layout to use as a block
+    #     '''
+    #     return unpack_bitstring(self.build())
+    
+
     def build(self):
         """ Return the payload buffer as a list
 
