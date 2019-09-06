@@ -109,7 +109,12 @@ class ModbusTransactionManager(object):
             # we know how much to read for the fixed size
             # header, so we loop until we have it to guide us.
             elif self.state == FramerState.ReadingHeader:
-                size = self.framer.header_size - len(self.framer.buffer)
+                # size = self.framer.header_size - len(self.framer.buffer)
+                # framing on not yet received stream data does not work.
+                # RTU header_size is 1 (1Byte of ADU for UnitID/SlaveID/Modbus Address)
+                # But need FunctionCode (1Byte) and Byte Count Byte to calculate length of Content Part
+                # [header_size xByte ... unitId/Addr 1Byte][FunctionCode 1Byte][Count 1Byte]
+                size = self.framer.header_size + 2 - len(self.framer.buffer)
                 if size != 0:
                     result = self.client.receive(size)  # off by one on clear
                     if not result:
@@ -140,7 +145,10 @@ class ModbusTransactionManager(object):
                     self.framer.check_frame()
                     size = self.framer.get_frame_size() - len(self.framer.buffer)
                 if size <= 0:
-                    self.state = FramerState.CompleteFrame
+                    if self.framer.check_frame():
+                        self.state = FramerState.CompleteFrame
+                    else:
+                        self.state = FramerState.ErrorInFrame
 
             # if we get a complete frame, we simply pass it on to
             # the application code to process. In this case, we
@@ -568,7 +576,10 @@ class ModbusRtuFramer(IModbusFramer):
         self.header['uid'] = self.buffer[0]
         func_code = self.buffer[1]
         pdu_class = self.decoder.lookup_pdu_class(func_code)
-        size = pdu_class.calculate_rtu_frame_size(self.buffer)
+        try:
+            size = pdu_class.calculate_rtu_frame_size(self.buffer)
+        except: # Bad for debugging - good for production stability
+            size = len(self.buffer) # fallback for cleanup
         self.header['len'] = size
         self.header['crc'] = self.buffer[size - 2:size]
 
